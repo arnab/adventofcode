@@ -1,5 +1,6 @@
 package aoc2016.day1
 
+import aoc.extensions.findFirstDuplicate
 import aoc.extensions.possiblyNegativeLookup
 import java.lang.Math.abs
 
@@ -108,19 +109,7 @@ object WalkTheBlocks {
         println("All locations visited:")
         travelRecorder.locationsVisited.forEach { println("... $it") }
 
-        return findFirstDuplicateLocation(travelRecorder.locationsVisited)
-    }
-
-    private fun findFirstDuplicateLocation(locations: List<Location>): Location? {
-        val locationCounts = mutableMapOf<Location, Int>()
-        locations.forEach {
-            if (locationCounts.containsKey(it))
-                locationCounts.put(it, locationCounts[it]!! + 1)
-            else
-                locationCounts.put(it, 1)
-        }
-
-        return locations.find { locationCounts[it]!! > 1 }
+        return travelRecorder.locationsVisited.findFirstDuplicate()
     }
 
     private fun parseMoves(moves: String): List<Move> {
