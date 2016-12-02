@@ -44,14 +44,12 @@ data class Position(val heading: Direction, val loc: Location) {
     val directionsInRightTurnOrder = listOf(Direction.N, Direction.E, Direction.S, Direction.W)
 
     private fun calculateNextHeading(heading: Direction, turn: Turn): Direction {
+        val modifierForTurn = (if (turn == Turn.R) 1 else -1)
         val currentIndex = directionsInRightTurnOrder.indexOf(heading)
-        var nextIndex = currentIndex + if (turn == Turn.R) 1 else -1
-        if (nextIndex >= directionsInRightTurnOrder.size)
-            nextIndex = directionsInRightTurnOrder.size - nextIndex
-        if (nextIndex < 0)
-            nextIndex += directionsInRightTurnOrder.size
 
-        return directionsInRightTurnOrder.get(nextIndex)
+        var nextIndex = (currentIndex + modifierForTurn) % directionsInRightTurnOrder.size
+        nextIndex = if (nextIndex < 0) directionsInRightTurnOrder.size + nextIndex else nextIndex
+        return directionsInRightTurnOrder[nextIndex]
     }
 
     private fun calculateNextPosition(nextHeading: Direction, blocks: Int): Position {
