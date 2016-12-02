@@ -19,11 +19,18 @@ data class Location(val x: Int, val y: Int) {
 data class Position(val heading: Direction, val loc: Location) {
     private var recorder: TravelRecorder? = null
 
+    fun enableTravelRecording(recorder: TravelRecorder?) {
+        this.recorder = recorder
+    }
+
     fun travel(move: Move): Position {
         val nextHeading = calculateNextHeading(heading, move.turn)
         val nextPosition = calculateNextPosition(nextHeading, move.blocks)
 
         println("Travel: $this + $move -> $nextPosition")
+        recorder?.logTravel(loc, nextPosition.loc)
+        nextPosition.enableTravelRecording(recorder ?: null)
+
         return nextPosition
     }
 
@@ -57,8 +64,12 @@ data class Position(val heading: Direction, val loc: Location) {
     }
 }
 
-class TravelRecorder(val locationsVisited: List<Location>) {
-
+class TravelRecorder(val locationsVisited: MutableList<Location>) {
+    fun logTravel(from: Location, to: Location) {
+        println("Recording travel from $from to $to")
+        locationsVisited.add(from)
+        locationsVisited.add(to)
+    }
 }
 
 object WalkTheBlocks {
@@ -75,8 +86,9 @@ object WalkTheBlocks {
     }
 
     fun findFirstRepeatedLocation(moves: String): Position {
-        val travelRecorder = TravelRecorder(listOf(startingLocation))
+        val travelRecorder = TravelRecorder(mutableListOf(startingLocation))
         val startingPosition = Position(Direction.N, startingLocation)
+        startingPosition.enableTravelRecording(travelRecorder)
         parseMoves(moves).fold(startingPosition, Position::travel)
         println("All locations visited: ${travelRecorder.locationsVisited}")
 
