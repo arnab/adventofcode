@@ -17,14 +17,11 @@ data class Location(val x: Int, val y: Int) {
 }
 
 data class Position(val heading: Direction, val loc: Location) {
+    private var recorder: TravelRecorder? = null
+
     fun travel(move: Move): Position {
         val nextHeading = calculateNextHeading(heading, move.turn)
-        val nextPosition = when (nextHeading) {
-            Direction.N -> Position(nextHeading, Location(loc.x, loc.y + move.blocks))
-            Direction.S -> Position(nextHeading, Location(loc.x, loc.y - move.blocks))
-            Direction.E -> Position(nextHeading, Location(loc.x + move.blocks, loc.y))
-            Direction.W -> Position(nextHeading, Location(loc.x - move.blocks, loc.y))
-        }
+        val nextPosition = calculateNextPosition(nextHeading, move.blocks)
 
         println("Travel: $this + $move -> $nextPosition")
         return nextPosition
@@ -49,21 +46,40 @@ data class Position(val heading: Direction, val loc: Location) {
 
         return directionsInRightTurnOrder.get(nextIndex)
     }
+
+    private fun calculateNextPosition(nextHeading: Direction, blocks: Int): Position {
+        return when (nextHeading) {
+            Direction.N -> Position(nextHeading, Location(loc.x, loc.y + blocks))
+            Direction.S -> Position(nextHeading, Location(loc.x, loc.y - blocks))
+            Direction.E -> Position(nextHeading, Location(loc.x + blocks, loc.y))
+            Direction.W -> Position(nextHeading, Location(loc.x - blocks, loc.y))
+        }
+    }
+}
+
+class TravelRecorder(val locationsVisited: List<Location>) {
+
 }
 
 object WalkTheBlocks {
     private val movesSeparatorPattern = Regex(""",\s+""")
     private val turnAndBlocksPattern = Regex("""([RL])(\d+)""")
-    private val startingPosition = Position(Direction.N, Location(0, 0))
+
+    private val startingLocation = Location(0, 0)
 
     fun calculateShortestPathDistance(moves: String): Int {
+        val startingPosition = Position(Direction.N, startingLocation)
         val finalPosition = parseMoves(moves).fold(startingPosition, Position::travel)
 
         return finalPosition.distanceFrom(startingPosition)
     }
 
     fun findFirstRepeatedLocation(moves: String): Position {
-//        parseMoves(moves).fold(startingPosition, Position::travel)
+        val travelRecorder = TravelRecorder(listOf(startingLocation))
+        val startingPosition = Position(Direction.N, startingLocation)
+        parseMoves(moves).fold(startingPosition, Position::travel)
+        println("All locations visited: ${travelRecorder.locationsVisited}")
+
         return startingPosition
     }
 
