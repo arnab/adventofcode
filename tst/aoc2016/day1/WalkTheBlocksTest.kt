@@ -60,10 +60,4 @@ class WalkTheBlocksTest {
         val distance = location?.distanceFrom(startingLocation)
         assertEquals(113, distance)
     }
-
-    @Test
-    fun findFirstRepeatedLocation_ProblemInputa() {
-        for(x in IntRange(0 + 1, 5)) println(x)
-        for(x in 5 - 1 downTo 0) println(x)
-    }
 }
