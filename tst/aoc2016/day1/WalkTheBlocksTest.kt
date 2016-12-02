@@ -1,8 +1,8 @@
 package aoc2016.day1
 
-import org.junit.jupiter.api.Assertions.*
+import aoc.util.TestResourceReader
+import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
-import java.io.File
 
 class WalkTheBlocksTest {
     fun walkTheBlockWithInputData(data: String): Int {
@@ -10,8 +10,7 @@ class WalkTheBlocksTest {
     }
 
     fun walkTheBlockWithInputDataFromFile(filename: String): Int {
-        val input = File(ClassLoader.getSystemResource(filename).toURI()).readText()
-        return walkTheBlockWithInputData(input)
+        return walkTheBlockWithInputData(TestResourceReader.readFile(filename))
     }
 
     @Test
@@ -36,5 +35,29 @@ class WalkTheBlocksTest {
     fun calculateShortestPathDistance_ProblemInput() {
         val distance = walkTheBlockWithInputDataFromFile("resources/aoc2016/day1/input.txt")
         assertEquals(234, distance)
+    }
+
+    fun findFirstRepeatedLocationWithInputData(data: String): Position {
+        return WalkTheBlocks.findFirstRepeatedLocation(data)
+    }
+
+    fun findFirstRepeatedLocationWithInputDataFromFile(filename: String): Position {
+        return findFirstRepeatedLocationWithInputData(TestResourceReader.readFile(filename))
+    }
+
+    val startingLocation = Position(Direction.N, 0, 0)
+
+    @Test
+    fun findFirstRepeatedLocation_Example1() {
+        val position = findFirstRepeatedLocationWithInputData("R8, R4, R4, R8")
+        val distance = position.distanceFrom(startingLocation)
+        assertEquals(12, distance)
+    }
+
+    @Test
+    fun findFirstRepeatedLocation_ProblemInput() {
+        val position = findFirstRepeatedLocationWithInputDataFromFile("resources/aoc2016/day1/input.txt")
+        val distance = position.distanceFrom(startingLocation)
+        assertEquals(0, distance)
     }
 }
