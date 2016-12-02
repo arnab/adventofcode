@@ -65,10 +65,12 @@ object LooKey {
 
         val instructions: List<List<Direction>> = data.lines()
                 .map(String::trim)
-                .filterNotNull()
+                .filter(String::isNotBlank)
                 .map { it.split(Regex("")) }
                 .map { it.filter(String::isNotBlank) }
                 .map { it.map(this::parseDirection) }
+
+        instructions.forEachIndexed { i, dirs -> logger.info { "Instructions: #$i of ${instructions.size}: $dirs" } }
 
         val code: List<Int> = instructions.map(this::applyDirections)
         logger.info { "Code: $code" }
