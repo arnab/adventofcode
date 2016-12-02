@@ -38,7 +38,7 @@ class WalkTheBlocksTest {
     }
 
     fun findFirstRepeatedLocationWithInputData(data: String): Location? {
-        return WalkTheBlocks.findFirstRepeatedLocation(data) ?: null
+        return WalkTheBlocks.findFirstRepeatedLocation(data)
     }
 
     fun findFirstRepeatedLocationWithInputDataFromFile(filename: String): Location? {

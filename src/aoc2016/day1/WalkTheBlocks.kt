@@ -3,6 +3,7 @@ package aoc2016.day1
 import aoc.extensions.findFirstDuplicate
 import aoc.extensions.possiblyNegativeLookup
 import java.lang.Math.abs
+import java.util.logging.Logger
 
 enum class Turn { R, L }
 data class Move(val turn: Turn, val blocks: Int)
@@ -25,15 +26,23 @@ enum class Direction {
 }
 
 data class Location(val x: Int, val y: Int) {
+    companion object {
+        val logger = Logger.getLogger(this.javaClass.name)
+    }
+
     fun distanceFrom(other: Location): Int {
         val distance = abs(other.x - x) + abs(other.y - y)
 
-        println("Distance of: $this, from: $other -> $distance")
+        logger.info { "$this to $other -> $distance" }
         return distance
     }
 }
 
 data class Position(val heading: Direction, val loc: Location) {
+    companion object {
+        val logger = Logger.getLogger(this.javaClass.name)
+    }
+
     private var recorder: TravelRecorder? = null
 
     fun enableTravelRecording(recorder: TravelRecorder?) {
@@ -44,9 +53,9 @@ data class Position(val heading: Direction, val loc: Location) {
         val nextHeading = if (move.turn == Turn.R) heading.next() else heading.previous()
         val nextPosition = calculateNextPosition(nextHeading, move.blocks)
 
-        println("Travel: $this + $move -> $nextPosition")
+        logger.info { "$this + $move -> $nextPosition" }
         recorder?.recordTravel(loc, nextPosition.loc)
-        nextPosition.enableTravelRecording(recorder ?: null)
+        nextPosition.enableTravelRecording(recorder)
 
         return nextPosition
     }
@@ -54,7 +63,7 @@ data class Position(val heading: Direction, val loc: Location) {
     fun distanceFrom(other: Position): Int {
         val distance = loc.distanceFrom(other.loc)
 
-        println("Distance of: $this, from: $other -> $distance")
+        logger.info { "$this to $other -> $distance" }
         return distance
     }
 
@@ -89,6 +98,8 @@ class TravelRecorder(val locationsVisited: MutableList<Location>) {
 }
 
 object WalkTheBlocks {
+    val logger = Logger.getLogger(this.javaClass.name)
+
     private val movesSeparatorPattern = Regex(""",\s+""")
     private val turnAndBlocksPattern = Regex("""([RL])(\d+)""")
 
@@ -106,8 +117,8 @@ object WalkTheBlocks {
         val startingPosition = Position(Direction.N, startingLocation)
         startingPosition.enableTravelRecording(travelRecorder)
         parseMoves(moves).fold(startingPosition, Position::travel)
-        println("All locations visited:")
-        travelRecorder.locationsVisited.forEach { println("... $it") }
+        logger.info { "${travelRecorder.locationsVisited.size} locations visited." }
+        travelRecorder.locationsVisited.forEachIndexed { i, l -> logger.fine { "$i: $l" } }
 
         return travelRecorder.locationsVisited.findFirstDuplicate()
     }
