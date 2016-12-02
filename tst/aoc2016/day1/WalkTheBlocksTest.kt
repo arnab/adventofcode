@@ -37,28 +37,28 @@ class WalkTheBlocksTest {
         assertEquals(234, distance)
     }
 
-    fun findFirstRepeatedLocationWithInputData(data: String): Position {
-        return WalkTheBlocks.findFirstRepeatedLocation(data)
+    fun findFirstRepeatedLocationWithInputData(data: String): Location? {
+        return WalkTheBlocks.findFirstRepeatedLocation(data) ?: null
     }
 
-    fun findFirstRepeatedLocationWithInputDataFromFile(filename: String): Position {
+    fun findFirstRepeatedLocationWithInputDataFromFile(filename: String): Location? {
         return findFirstRepeatedLocationWithInputData(TestResourceReader.readFile(filename))
     }
 
-    val startingLocation = Position(Direction.N, Location(0, 0))
+    val startingLocation = Location(0, 0)
 
     @Test
     fun findFirstRepeatedLocation_Example1() {
-        val position = findFirstRepeatedLocationWithInputData("R8, R4, R4, R8")
-        val distance = position.distanceFrom(startingLocation)
-        assertEquals(12, distance)
+        val location = findFirstRepeatedLocationWithInputData("R8, R4, R4, R8")
+        val distance = location?.distanceFrom(startingLocation)
+        assertEquals(4, distance)
     }
 
     @Test
     fun findFirstRepeatedLocation_ProblemInput() {
-        val position = findFirstRepeatedLocationWithInputDataFromFile("resources/aoc2016/day1/input.txt")
-        val distance = position.distanceFrom(startingLocation)
-        assertEquals(0, distance)
+        val location = findFirstRepeatedLocationWithInputDataFromFile("resources/aoc2016/day1/input.txt")
+        val distance = location?.distanceFrom(startingLocation)
+        assertEquals(113, distance)
     }
 
     @Test

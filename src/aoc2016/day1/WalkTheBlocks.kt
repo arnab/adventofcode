@@ -97,7 +97,7 @@ object WalkTheBlocks {
         return finalPosition.distanceFrom(startingPosition)
     }
 
-    fun findFirstRepeatedLocation(moves: String): Position {
+    fun findFirstRepeatedLocation(moves: String): Location? {
         val travelRecorder = TravelRecorder(mutableListOf())
         val startingPosition = Position(Direction.N, startingLocation)
         startingPosition.enableTravelRecording(travelRecorder)
@@ -105,8 +105,19 @@ object WalkTheBlocks {
         println("All locations visited:")
         travelRecorder.locationsVisited.forEach { println("... $it") }
 
-        // FIXME
-        return startingPosition
+        return findFirstDuplicateLocation(travelRecorder.locationsVisited)
+    }
+
+    private fun findFirstDuplicateLocation(locations: List<Location>): Location? {
+        val locationCounts = mutableMapOf<Location, Int>()
+        locations.forEach {
+            if (locationCounts.containsKey(it))
+                locationCounts.put(it, locationCounts[it]!! + 1)
+            else
+                locationCounts.put(it, 1)
+        }
+
+        return locations.find { locationCounts[it]!! > 1 }
     }
 
     private fun parseMoves(moves: String): List<Move> {
