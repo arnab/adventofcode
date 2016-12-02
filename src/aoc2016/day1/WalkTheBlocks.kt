@@ -1,5 +1,6 @@
 package aoc2016.day1
 
+import aoc.extensions.possiblyNegativeLookup
 import java.lang.Math.abs
 
 enum class Turn { R, L }
@@ -11,18 +12,16 @@ enum class Direction {
     private val order by lazy { listOf(N, E, S, W) }
 
     fun add(turns: Int): Direction {
-        val current = order.indexOf(this)
+        val currentIndex = order.indexOf(this)
 
-        var next = (current + turns) % order.size
-        next = if (next < 0) order.size + next else next
-        return order[next]
+        var nextIndex = (currentIndex + turns) % order.size
+        return order.possiblyNegativeLookup(nextIndex)
     }
 
     fun subtract(turns: Int) = add(-1 * turns)
     fun next(): Direction = add(1)
     fun previous(): Direction = subtract(1)
 }
-
 
 data class Location(val x: Int, val y: Int) {
     fun distanceFrom(other: Location): Int {
