@@ -1,22 +1,47 @@
 package aoc2016.day1
 
+import java.lang.Math.abs
+
 enum class Turn { R, L }
 data class Move(val turn: Turn, val blocks: Int)
 
 enum class Direction { N, E, S, W }
 
 data class Position(val heading: Direction, val x: Int, val y: Int) {
+
     fun travel(move: Move): Position {
-        println("pos: $this move: $move")
-        return Position(Direction.N, 0, 0)
+        val nextHeading = calculateNextHeading(heading, move.turn)
+        val nextPosition = when (nextHeading) {
+            Direction.N -> Position(nextHeading, x = x, y = y + move.blocks)
+            Direction.S -> Position(nextHeading, x = x, y = y - move.blocks)
+            Direction.E -> Position(nextHeading, x = x + move.blocks, y = y)
+            Direction.W -> Position(nextHeading, x = x - move.blocks, y = y)
+        }
+
+        println("Travel: $this + $move -> $nextPosition")
+        return nextPosition
     }
 
     fun distanceFrom(other: Position): Int {
-        // FIXME
-        return 1
+        val distance = abs(other.x - x) + abs(other.y - y)
+
+        println("Distance of: $this, from: $other -> $distance")
+        return distance
+    }
+
+    val directionsInRightTurnOrder = listOf(Direction.N, Direction.E, Direction.S, Direction.W)
+
+    private fun calculateNextHeading(heading: Direction, turn: Turn): Direction {
+        val currentIndex = directionsInRightTurnOrder.indexOf(heading)
+        var nextIndex = currentIndex + if (turn == Turn.R) 1 else -1
+        if (nextIndex >= directionsInRightTurnOrder.size)
+            nextIndex = directionsInRightTurnOrder.size - nextIndex
+        if (nextIndex < 0)
+            nextIndex += directionsInRightTurnOrder.size
+
+        return directionsInRightTurnOrder.get(nextIndex)
     }
 }
-
 
 object WalkTheBlocks {
     private val movesSeperatorPattern = Regex(""",\s+""")

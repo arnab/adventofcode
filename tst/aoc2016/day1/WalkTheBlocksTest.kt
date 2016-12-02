@@ -35,6 +35,6 @@ class WalkTheBlocksTest {
     @Test
     fun calculateShortestPathDistance_ProblemInput() {
         val distance = walkTheBlockWithInputDataFromFile("resources/aoc2016/day1/input.txt")
-        assertEquals(25, distance)
+        assertEquals(234, distance)
     }
 }
