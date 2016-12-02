@@ -7,7 +7,7 @@ enum class Direction { N, E, S, W }
 
 data class Position(val heading: Direction, val x: Int, val y: Int) {
     fun travel(move: Move): Position {
-        // FIXME
+        println("pos: $this move: $move")
         return Position(Direction.N, 0, 0)
     }
 
@@ -19,6 +19,9 @@ data class Position(val heading: Direction, val x: Int, val y: Int) {
 
 
 object WalkTheBlocks {
+    private val movesSeperatorPattern = Regex(""",\s+""")
+    private val turnAndBlocksPattern = Regex("""([RL])(\d+)""")
+
     fun calculateShortestPathDistance(moves: String): Int {
         val initialPosition = Position(Direction.N, x = 0, y = 0)
         val finalPosition = parseMoves(moves).fold(initialPosition, Position::travel)
@@ -27,8 +30,15 @@ object WalkTheBlocks {
     }
 
     private fun parseMoves(moves: String): List<Move> {
-        println(moves)
-        // FIXME
-        return listOf(Move(Turn.R, 1), Move(Turn.L, 3))
+        return moves.split(movesSeperatorPattern)
+                .map(String::trim)
+                .map { m -> parseTurnAndNumBlocks(m) }
+                .filterNotNull()
+    }
+
+    private fun parseTurnAndNumBlocks(move: String): Move? {
+        val matches = turnAndBlocksPattern.matchEntire(move)
+        val (turn, numBlocks) = matches?.destructured ?: return null
+        return Move(Turn.valueOf(turn), numBlocks.toInt())
     }
 }
