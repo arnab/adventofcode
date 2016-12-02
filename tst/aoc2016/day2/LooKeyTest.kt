@@ -24,6 +24,6 @@ class LooKeyTest {
     @Test
     fun decipher_Problem1() {
         val looKey = decipherLooKeyForInstructionsFromFile("resources/aoc2016/day2/input1.txt")
-        assertEquals(12345, looKey)
+        assertEquals(829588, looKey)
     }
 }
