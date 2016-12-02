@@ -45,7 +45,7 @@ class WalkTheBlocksTest {
         return findFirstRepeatedLocationWithInputData(TestResourceReader.readFile(filename))
     }
 
-    val startingLocation = Position(Direction.N, 0, 0)
+    val startingLocation = Position(Direction.N, Location(0, 0))
 
     @Test
     fun findFirstRepeatedLocation_Example1() {

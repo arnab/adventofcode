@@ -7,15 +7,23 @@ data class Move(val turn: Turn, val blocks: Int)
 
 enum class Direction { N, E, S, W }
 
-data class Position(val heading: Direction, val x: Int, val y: Int) {
+data class Location(val x: Int, val y: Int) {
+    fun distanceFrom(other: Location): Int {
+        val distance = abs(other.x - x) + abs(other.y - y)
 
+        println("Distance of: $this, from: $other -> $distance")
+        return distance
+    }
+}
+
+data class Position(val heading: Direction, val loc: Location) {
     fun travel(move: Move): Position {
         val nextHeading = calculateNextHeading(heading, move.turn)
         val nextPosition = when (nextHeading) {
-            Direction.N -> Position(nextHeading, x = x, y = y + move.blocks)
-            Direction.S -> Position(nextHeading, x = x, y = y - move.blocks)
-            Direction.E -> Position(nextHeading, x = x + move.blocks, y = y)
-            Direction.W -> Position(nextHeading, x = x - move.blocks, y = y)
+            Direction.N -> Position(nextHeading, Location(loc.x, loc.y + move.blocks))
+            Direction.S -> Position(nextHeading, Location(loc.x, loc.y - move.blocks))
+            Direction.E -> Position(nextHeading, Location(loc.x + move.blocks, loc.y))
+            Direction.W -> Position(nextHeading, Location(loc.x - move.blocks, loc.y))
         }
 
         println("Travel: $this + $move -> $nextPosition")
@@ -23,7 +31,7 @@ data class Position(val heading: Direction, val x: Int, val y: Int) {
     }
 
     fun distanceFrom(other: Position): Int {
-        val distance = abs(other.x - x) + abs(other.y - y)
+        val distance = loc.distanceFrom(other.loc)
 
         println("Distance of: $this, from: $other -> $distance")
         return distance
@@ -44,18 +52,23 @@ data class Position(val heading: Direction, val x: Int, val y: Int) {
 }
 
 object WalkTheBlocks {
-    private val movesSeperatorPattern = Regex(""",\s+""")
+    private val movesSeparatorPattern = Regex(""",\s+""")
     private val turnAndBlocksPattern = Regex("""([RL])(\d+)""")
+    private val startingPosition = Position(Direction.N, Location(0, 0))
 
     fun calculateShortestPathDistance(moves: String): Int {
-        val initialPosition = Position(Direction.N, x = 0, y = 0)
-        val finalPosition = parseMoves(moves).fold(initialPosition, Position::travel)
+        val finalPosition = parseMoves(moves).fold(startingPosition, Position::travel)
 
-        return finalPosition.distanceFrom(initialPosition)
+        return finalPosition.distanceFrom(startingPosition)
+    }
+
+    fun findFirstRepeatedLocation(moves: String): Position {
+//        parseMoves(moves).fold(startingPosition, Position::travel)
+        return startingPosition
     }
 
     private fun parseMoves(moves: String): List<Move> {
-        return moves.split(movesSeperatorPattern)
+        return moves.split(movesSeparatorPattern)
                 .map(String::trim)
                 .map { m -> parseTurnAndNumBlocks(m) }
                 .filterNotNull()
