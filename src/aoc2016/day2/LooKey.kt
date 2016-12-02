@@ -51,7 +51,7 @@ object NumPad {
             Direction.R -> Location.of(latestLocation.x + 1, latestLocation.y)
         } ?: latestLocation
 
-        logger.info {
+        logger.fine {
             "$direction from ${keyAtCurrentLocation()} ($latestLocation) -> ${keyAt(nextLocation)} ($nextLocation)"
         }
         latestLocation = nextLocation
@@ -70,7 +70,7 @@ object LooKey {
                 .map { it.filter(String::isNotBlank) }
                 .map { it.map(this::parseDirection) }
 
-        instructions.forEachIndexed { i, dirs -> logger.info { "Instructions: #$i of ${instructions.size}: $dirs" } }
+        instructions.forEachIndexed { i, dirs -> logger.fine { "Instructions: #$i of ${instructions.size}: $dirs" } }
 
         val code: List<Int> = instructions.map(this::applyDirections)
         logger.info { "Code: $code" }
