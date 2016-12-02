@@ -5,7 +5,24 @@ import java.lang.Math.abs
 enum class Turn { R, L }
 data class Move(val turn: Turn, val blocks: Int)
 
-enum class Direction { N, E, S, W }
+enum class Direction {
+    N, E, S, W;
+
+    private val order by lazy { listOf(N, E, S, W) }
+
+    fun add(turns: Int): Direction {
+        val current = order.indexOf(this)
+
+        var next = (current + turns) % order.size
+        next = if (next < 0) order.size + next else next
+        return order[next]
+    }
+
+    fun subtract(turns: Int) = add(-1 * turns)
+    fun next(): Direction = add(1)
+    fun previous(): Direction = subtract(1)
+}
+
 
 data class Location(val x: Int, val y: Int) {
     fun distanceFrom(other: Location): Int {
@@ -24,7 +41,7 @@ data class Position(val heading: Direction, val loc: Location) {
     }
 
     fun travel(move: Move): Position {
-        val nextHeading = calculateNextHeading(heading, move.turn)
+        val nextHeading = if (move.turn == Turn.R) heading.next() else heading.previous()
         val nextPosition = calculateNextPosition(nextHeading, move.blocks)
 
         println("Travel: $this + $move -> $nextPosition")
@@ -39,17 +56,6 @@ data class Position(val heading: Direction, val loc: Location) {
 
         println("Distance of: $this, from: $other -> $distance")
         return distance
-    }
-
-    val directionsInRightTurnOrder = listOf(Direction.N, Direction.E, Direction.S, Direction.W)
-
-    private fun calculateNextHeading(heading: Direction, turn: Turn): Direction {
-        val modifierForTurn = (if (turn == Turn.R) 1 else -1)
-        val currentIndex = directionsInRightTurnOrder.indexOf(heading)
-
-        var nextIndex = (currentIndex + modifierForTurn) % directionsInRightTurnOrder.size
-        nextIndex = if (nextIndex < 0) directionsInRightTurnOrder.size + nextIndex else nextIndex
-        return directionsInRightTurnOrder[nextIndex]
     }
 
     private fun calculateNextPosition(nextHeading: Direction, blocks: Int): Position {
