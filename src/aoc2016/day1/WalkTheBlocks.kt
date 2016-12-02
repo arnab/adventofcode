@@ -28,7 +28,7 @@ data class Position(val heading: Direction, val loc: Location) {
         val nextPosition = calculateNextPosition(nextHeading, move.blocks)
 
         println("Travel: $this + $move -> $nextPosition")
-        recorder?.logTravel(loc, nextPosition.loc)
+        recorder?.recordTravel(loc, nextPosition.loc)
         nextPosition.enableTravelRecording(recorder ?: null)
 
         return nextPosition
@@ -65,10 +65,22 @@ data class Position(val heading: Direction, val loc: Location) {
 }
 
 class TravelRecorder(val locationsVisited: MutableList<Location>) {
-    fun logTravel(from: Location, to: Location) {
-        println("Recording travel from $from to $to")
-        locationsVisited.add(from)
-        locationsVisited.add(to)
+    fun recordTravel(from: Location, to: Location) {
+        if (from.x < to.x) {
+            for(x in IntRange(from.x + 1, to.x)) locationsVisited.add(Location(x, from.y))
+        }
+
+        if (from.x > to.x) {
+            for(x in from.x - 1 downTo to.x) locationsVisited.add(Location(x, from.y))
+        }
+
+        if (from.y < to.y) {
+            for(y in IntRange(from.y + 1, to.y)) locationsVisited.add(Location(from.x, y))
+        }
+
+        if (from.y > to.y) {
+            for(y in from.y - 1 downTo to.y) locationsVisited.add(Location(from.x, y))
+        }
     }
 }
 
@@ -86,12 +98,14 @@ object WalkTheBlocks {
     }
 
     fun findFirstRepeatedLocation(moves: String): Position {
-        val travelRecorder = TravelRecorder(mutableListOf(startingLocation))
+        val travelRecorder = TravelRecorder(mutableListOf())
         val startingPosition = Position(Direction.N, startingLocation)
         startingPosition.enableTravelRecording(travelRecorder)
         parseMoves(moves).fold(startingPosition, Position::travel)
-        println("All locations visited: ${travelRecorder.locationsVisited}")
+        println("All locations visited:")
+        travelRecorder.locationsVisited.forEach { println("... $it") }
 
+        // FIXME
         return startingPosition
     }
 
