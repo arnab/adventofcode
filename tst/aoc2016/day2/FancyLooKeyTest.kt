@@ -24,7 +24,7 @@ internal class FancyLooKeyTest {
     @Test
     fun decipher_Problem1() {
         val looKey = decipherLooKeyForInstructionsFromFile("resources/aoc2016/day2/input1.txt")
-        assertEquals("", looKey)
+        assertEquals("B3DB8", looKey)
     }
 
 }

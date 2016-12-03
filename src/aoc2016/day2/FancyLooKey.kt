@@ -1,5 +1,6 @@
 package aoc2016.day2
 
+import java.util.logging.Level
 import java.util.logging.Logger
 
 data class FancyLocation(val x: Int, val y: Int) {
@@ -8,8 +9,10 @@ data class FancyLocation(val x: Int, val y: Int) {
      */
     companion object {
         fun of(x: Int, y: Int): FancyLocation? {
-            if (x < 0 || x >= NumPad.keys.size) return null
-            if (y < 0 || y >= NumPad.keys.first().size) return null
+            if (x < 0 || x >= FancyNumPad.keys.size) return null
+            if (y < 0 || y >= FancyNumPad.keys.first().size) return null
+
+            if (FancyNumPad.keys[x][y].isBlank()) return null
 
             return FancyLocation(x, y)
         }
@@ -36,7 +39,7 @@ object FancyNumPad {
     )
 
     // "5" or (1,1)
-    val initialLocation = FancyLocation(1, 1)
+    val initialLocation = FancyLocation(0, 2)
     var latestLocation = initialLocation
 
     fun keyAt(location: FancyLocation): String = keys[location.x][location.y]
