@@ -2,51 +2,55 @@ package aoc2016.day2
 
 import java.util.logging.Logger
 
-data class Location(val x: Int, val y: Int) {
+data class FancyLocation(val x: Int, val y: Int) {
     /**
      * Safe builder. If x or y are out of bound, it returns null.
      */
     companion object {
-        fun of(x: Int, y: Int): Location? {
+        fun of(x: Int, y: Int): FancyLocation? {
             if (x < 0 || x >= NumPad.keys.size) return null
             if (y < 0 || y >= NumPad.keys.first().size) return null
 
-            return Location(x, y)
+            return FancyLocation(x, y)
         }
     }
 }
 
-object NumPad {
+object FancyNumPad {
     private val logger = Logger.getLogger(this.javaClass.name)
 
     /**
-     * Keys arranged in the natural keypad order. So, (1,0): 8, (0,1): 4, (2,2): 3 etc.:
-     *   1 2 3
-     *   4 5 6
-     *   7 8 9
+     * Keys arranged in the natural keypad order:
+     *      1
+     *    2 3 4
+     *  5 6 7 8 9
+     *    A B C
+     *      D
      */
     val keys = arrayOf(
-            intArrayOf(7, 4, 1),
-            intArrayOf(8, 5, 2),
-            intArrayOf(9, 6, 3)
+            arrayOf("", "", "5", "", ""),
+            arrayOf("", "A", "6", "2", ""),
+            arrayOf("D", "B", "7", "3", "1"),
+            arrayOf("", "C", "8", "5", ""),
+            arrayOf("", "", "9", "", "")
     )
 
     // "5" or (1,1)
-    val initialLocation = Location(1, 1)
+    val initialLocation = FancyLocation(1, 1)
     var latestLocation = initialLocation
 
-    fun keyAt(location: Location): Int = keys[location.x][location.y]
-    fun keyAtCurrentLocation(): Int = keyAt(latestLocation)
+    fun keyAt(location: FancyLocation): String = keys[location.x][location.y]
+    fun keyAtCurrentLocation(): String = keyAt(latestLocation)
 
     /**
      * switches latestLocation to the next location based on the given direction.
      */
     fun move(direction: Direction) {
         val nextLocation = when(direction) {
-            Direction.U -> Location.of(latestLocation.x, latestLocation.y + 1)
-            Direction.D -> Location.of(latestLocation.x, latestLocation.y - 1)
-            Direction.L -> Location.of(latestLocation.x - 1, latestLocation.y)
-            Direction.R -> Location.of(latestLocation.x + 1, latestLocation.y)
+            Direction.U -> FancyLocation.of(latestLocation.x, latestLocation.y + 1)
+            Direction.D -> FancyLocation.of(latestLocation.x, latestLocation.y - 1)
+            Direction.L -> FancyLocation.of(latestLocation.x - 1, latestLocation.y)
+            Direction.R -> FancyLocation.of(latestLocation.x + 1, latestLocation.y)
         } ?: latestLocation
 
         logger.fine {
@@ -56,10 +60,10 @@ object NumPad {
     }
 }
 
-object LooKey {
+object FancyLooKey {
     private val logger = Logger.getLogger(this.javaClass.name)
 
-    fun  decipher(data: String): Int {
+    fun  decipher(data: String): String {
 
         val instructions: List<List<Direction>> = data.lines()
                 .map(String::trim)
@@ -70,20 +74,19 @@ object LooKey {
 
         instructions.forEachIndexed { i, dirs -> logger.fine { "Instructions: #$i of ${instructions.size}: $dirs" } }
 
-        val code: List<Int> = instructions.map(this::applyDirections)
+        val code: List<String> = instructions.map(this::applyDirections)
         logger.info { "Code: $code" }
 
-        return code.joinToString("").toInt()
+        return code.joinToString("")
     }
 
     private fun parseDirection(s: String): Direction = Direction.valueOf(s)
 
-    private fun applyDirections(directions: List<Direction>): Int {
+    private fun applyDirections(directions: List<Direction>): String {
         logger.info { "Applying instructions: $directions" }
-        directions.forEach { NumPad.move(it) }
-        logger.info { "Current Key: ${NumPad.keyAtCurrentLocation()}" }
+        directions.forEach { FancyNumPad.move(it) }
+        logger.info { "Current Key: ${FancyNumPad.keyAtCurrentLocation()}" }
 
-        return NumPad.keyAtCurrentLocation()
+        return FancyNumPad.keyAtCurrentLocation()
     }
-
 }
