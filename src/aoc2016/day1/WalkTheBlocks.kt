@@ -5,7 +5,7 @@ import aoc.extensions.possiblyNegativeLookup
 import java.lang.Math.abs
 import java.util.logging.Logger
 
-enum class Turn { R, L }
+enum class Turn(val steps: Int) { R(1), L(-1) }
 data class Move(val turn: Turn, val blocks: Int)
 
 enum class Direction {
@@ -21,8 +21,7 @@ enum class Direction {
     }
 
     fun subtract(turns: Int) = add(-1 * turns)
-    fun next(): Direction = add(1)
-    fun previous(): Direction = subtract(1)
+    fun apply(turn: Turn) = add(turn.steps)
 }
 
 data class Location(val x: Int, val y: Int) {
@@ -50,7 +49,7 @@ data class Position(val heading: Direction, val loc: Location) {
     }
 
     fun travel(move: Move): Position {
-        val nextHeading = if (move.turn == Turn.R) heading.next() else heading.previous()
+        val nextHeading = heading.apply(move.turn)
         val nextPosition = calculateNextPosition(nextHeading, move.blocks)
 
         logger.info { "$this + $move -> $nextPosition" }
