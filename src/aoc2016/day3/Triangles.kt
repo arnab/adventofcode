@@ -2,10 +2,7 @@ package aoc2016.day3
 
 
 data class Triangle(val a: Int, val b: Int, val c: Int) {
-    fun  isValid(): Boolean {
-        return true
-    }
-
+    fun  isValid(): Boolean = (a + b > c) && (b + c > a) && (c + a > b)
 }
 
 object Triangles {

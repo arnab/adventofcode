@@ -30,6 +30,6 @@ internal class TrianglesTest {
     @Test
     fun countValid_Problem1() {
         val count = countValidTrianglesFromFile("resources/aoc2016/day3/input.txt")
-        assertEquals(0, count)
+        assertEquals(982, count)
     }
 }
