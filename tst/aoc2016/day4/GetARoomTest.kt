@@ -36,4 +36,10 @@ internal class GetARoomTest {
     @Test fun Room_name_Example5() {
         assertEquals("very encrypted name", Room.from("qzmt-zixmtkozy-ivhz-343[zimth]")!!.name)
     }
+
+    @Test fun sectorIdOfNorthPoleRoom() {
+        val data = TestResourceReader.readFile("resources/aoc2016/day4/input.txt")
+        val northPoleObjectStorageRoom = GetARoom.filterValidRooms(data).find { it.name == "northpole object storage" }
+        assertEquals(267, northPoleObjectStorageRoom!!.sectorId)
+    }
 }
