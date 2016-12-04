@@ -6,8 +6,7 @@ data class Room(val encryptedName: String, val sectorId: Int, val checkSum: Stri
     val computedCheckSum: String by lazy { computeCheckSum() }
 
     private fun  decryptName(): String = encryptedName
-                .replace("-", " ")
-                .split(" ")
+                .split("-")
                 .map { w -> w.map { c -> rotateBy(c, sectorId) } }
                 .map { w -> w.joinToString("") }
                 .joinToString(" ")
