@@ -32,4 +32,8 @@ internal class GetARoomTest {
         val sum = GetARoom.sumOfValidRoomSectorIds(data)
         assertEquals(278221, sum)
     }
+
+    @Test fun Room_name_Example5() {
+        assertEquals("very encrypted name", Room.from("qzmt-zixmtkozy-ivhz-343[zimth]")!!.name)
+    }
 }

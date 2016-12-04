@@ -1,7 +1,21 @@
 package aoc2016.day4
 
 data class Room(val encryptedName: String, val sectorId: Int, val checkSum: String) {
+    val name: String by lazy { decryptName() }
+
     val computedCheckSum: String by lazy { computeCheckSum() }
+
+    private fun  decryptName(): String = encryptedName
+                .replace("-", " ")
+                .split(" ")
+                .map { w -> w.map { c -> rotateBy(c, sectorId) } }
+                .map { w -> w.joinToString("") }
+                .joinToString(" ")
+
+    private fun rotateBy(c: Char, n: Int): Char {
+        val indexAfterRotation = (aToz.indexOf(c) + n) % aToz.size
+        return aToz[indexAfterRotation]
+    }
 
     private fun  computeCheckSum(): String {
         val letters = encryptedName.filter(Char::isLetter)
@@ -26,6 +40,8 @@ data class Room(val encryptedName: String, val sectorId: Int, val checkSum: Stri
     fun isReal(): Boolean = checkSum == computedCheckSum
 
     companion object {
+        private val aToz: List<Char> = ('a'..'z').toList()
+
         // e.g. aaaaa-bbb-z-y-x-123[abxyz]
         private val roomPattern = Regex("""([\w-]+)-(\d+)\[(\w+)\]""")
 
