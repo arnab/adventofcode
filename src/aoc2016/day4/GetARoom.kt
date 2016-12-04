@@ -1,7 +1,5 @@
 package aoc2016.day4
 
-import java.util.logging.Logger
-
 data class Room(val encryptedName: String, val sectorId: Int, val checkSum: String) {
     val computedCheckSum: String by lazy { computeCheckSum() }
 
@@ -28,8 +26,6 @@ data class Room(val encryptedName: String, val sectorId: Int, val checkSum: Stri
     fun isReal(): Boolean = checkSum == computedCheckSum
 
     companion object {
-        private val logger = Logger.getLogger(this.javaClass.name)
-
         // e.g. aaaaa-bbb-z-y-x-123[abxyz]
         private val roomPattern = Regex("""([\w-]+)-(\d+)\[(\w+)\]""")
 
@@ -42,5 +38,13 @@ data class Room(val encryptedName: String, val sectorId: Int, val checkSum: Stri
 }
 
 object GetARoom {
+    fun filterValidRooms(data: String): List<Room> = data
+            .lines()
+            .map(String::trim)
+            .filter(String::isNotBlank)
+            .map { Room.from(it) }
+            .filterNotNull()
+            .filter(Room::isReal)
 
+    fun sumOfValidRoomSectorIds(data: String) = filterValidRooms(data).sumBy(Room::sectorId)
 }
