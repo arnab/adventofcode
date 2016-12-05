@@ -15,6 +15,16 @@ internal class PwdTest {
         assertEquals("d4cd2ee1", pwd)
     }
 
+    @Test fun calculatePositional_Example1() {
+        val pwd = Pwd.calculatePositional("abc")
+        assertEquals("05ace8e3", pwd)
+    }
+
+    @Test fun calculatePositional_Problem1() {
+        val pwd = Pwd.calculatePositional("ugkcyxxp")
+        assertEquals("f2c730e5", pwd)
+    }
+
     @Test fun md5() {
         assertEquals("00000155f8105dff7f56ee10fa9b9abd", Pwd.md5("abc3231929"))
         assertEquals("000008f82c5b3924a1ecbebf60344e00", Pwd.md5("abc5017308"))
