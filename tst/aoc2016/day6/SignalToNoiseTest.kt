@@ -25,12 +25,12 @@ internal class SignalToNoiseTest {
                     dvrsen
                     enarar""".trimIndent()
         val realMessage = SignalToNoise.findRealMessage(data)
-        assertEquals("easter", realMessage)
+        assertEquals("advent", realMessage)
     }
 
     @Test fun findRealMessage_ProblemInput() {
         val data = TestResourceReader.readFile("resources/aoc2016/day6/input.txt")
         val realMessage = SignalToNoise.findRealMessage(data)
-        assertEquals("xhnqpqql", realMessage)
+        assertEquals("brhailro", realMessage)
     }
 }

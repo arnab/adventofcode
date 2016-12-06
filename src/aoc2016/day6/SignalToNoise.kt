@@ -12,7 +12,7 @@ object SignalToNoise {
     private fun  decypher(rawData: List<String>): String {
         return 0.until(rawData.first().chars().count()).map { column ->
             val chars = rawData.map { it[column.toInt()] }.groupBy { it }
-            chars.values.sortedByDescending { it.size }.first().first()
+            chars.values.sortedBy { it.size }.first().first()
         }.joinToString("")
     }
 }
