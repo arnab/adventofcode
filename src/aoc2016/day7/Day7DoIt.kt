@@ -2,52 +2,81 @@ package aoc2016.day7
 
 object Day7DoIt {
     fun doit(data: String): Int {
-        val matches = data
+        val (matches, rejected) = data
                 .lines()
                 .map(String::trim)
                 .filter(String::isNotBlank)
-                .filter(this::supportsTls)
+                .partition(this::supportsTls)
+
         println("Following ${matches.count()} strings matched:")
-        matches.forEach { println("\t$it") }
+        matches.forEach { println("\t ✔ $it") }
+
+        println("Following ${rejected.count()} strings DID NOT match:")
+        rejected.forEach { println("\t ✘ $it") }
 
         return matches.count()
     }
 
-    val abbaPattern = Regex("""([a-z])([a-z])\2\1""")
+    val abaPattern = Regex("""([a-z])([a-z])\1""")
+
+    fun supportsTls(data: String): Boolean {
+        println("Testing: $data")
+
+        var matches: MutableList<MatchResult> = mutableListOf()
+
+        for (i in 0 until data.count() - 6) {
+            val subData = data.subSequence(i, data.count())
+//            println("\t Looking at sub str: $subData")
+            matches.addAll(abaPattern.findAll(subData).toList())
+        }
+
+        val uniqueMatches = matches.groupBy { it.groups.first()?.value }.values.map { it.first() }
+        val supportsSsl = uniqueMatches.any { match -> assessMatch(match, data) }
+
+        if (supportsSsl)
+            println("Confirmed: Supports SSL: $data")
+        else
+            println("Denied: DOES NOT Supports SSL: $data")
 
 
-    fun  supportsTls(data: String): Boolean {
-        println("Testing $data")
+        return supportsSsl
+    }
 
-        val matches = abbaPattern.findAll(data)
+    private fun assessMatch(match: MatchResult, data: String): Boolean {
+        val (str, a, b) = match.groupValues
 
-        if (matches.count() == 0) {
-            println("false: No matches")
+        println("Testing Match: $str")
+
+        if (a == b) {
+            println("false: Same repeating chars ($a, $b)")
             return false
         }
 
-        matches.forEach { match ->
-            val (str, a, b) = match.groupValues
+        val bracketsNonMatchPattern = Regex("\\[\\w*$a$b$a\\w*\\]")
 
-            if (a == b) {
-                println("false: Same repeating chars ($a, $b)")
-                return false
-            }
-
-            val bracketsPattern = Regex("\\[\\w*$str\\w*\\]")
-
-            val bracketsPatternMatch = bracketsPattern.find(data)
-            if (bracketsPatternMatch != null && bracketsPatternMatch.groups.size > 0) {
-                println("false: Matches bracket pattern")
-                return false
-            }
+        val bracketsNonMatchPatternMatch = bracketsNonMatchPattern.find(data)
+        if (bracketsNonMatchPatternMatch != null && bracketsNonMatchPatternMatch.groups.size > 0) {
+            println("false: ABA pattern found inside []!!!")
+            return false
         }
 
-        println("MATCH FOUND!!!")
-        matches.forEach { m ->
-            println("\t${m.groupValues.first()}")
+//        val babOutsideBracketsPattern = Regex("($b$a$b)(?![^\\[]*\\])")
+//
+//        val babOutsideBracketsPatternMatch = babOutsideBracketsPattern.find(data)
+//        if (babOutsideBracketsPatternMatch != null && babOutsideBracketsPatternMatch.groups.size > 0) {
+//            println("false: BAB pattern found outside []!!!")
+//            return false
+//        }
+
+        val bracketsPattern = Regex("\\[\\w*$b$a$b\\w*\\]")
+
+        val bracketsPatternMatch = bracketsPattern.find(data)
+        if (bracketsPatternMatch != null && bracketsPatternMatch.groups.size > 0) {
+            println("true: BAB pattern found!!!")
+            return true
         }
 
-        return true
+        println("false: by default!!!")
+        return false
     }
 }
