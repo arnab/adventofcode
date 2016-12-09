@@ -53,24 +53,27 @@ data class Board(val size: Pair<Int, Int>) {
     }
 
     private fun applyRotateRowInstruction(row: Int, shift: Int) {
-        // ☃ ☃ ☃ -  - -  -
-        // -  -  - - ☃ ☃ ☃ 4 _> 1 (7 - 4 + 4
         val size = cells[row].size
         val rowOriginal = cells[row].map { it.copy() }
         cells[row].forEachIndexed { i, cell ->
-            val indexBeingShifted = (size - shift + i) % 7
+            val indexBeingShifted = (size - shift + i) % size
             cell.on = rowOriginal[indexBeingShifted].on
         }
     }
 
     private fun applyRotateColInstruction(col: Int, shift: Int) {
-        // TODO
+        val size = cells.size
+        val columnOriginal = cells.map { row -> row[col] }.map { it.copy() }
+        cells.forEachIndexed { i, row ->
+            val indexBeingShifted = (size - shift + i) % size
+            cells[i][col].on = columnOriginal[indexBeingShifted].on
+        }
     }
 
     fun draw() {
         cells.forEach { row ->
             println()
-            println(row.map(Cell::draw).joinToString(" "))
+            println(row.map(Cell::draw).joinToString(""))
         }
     }
 }
@@ -79,12 +82,10 @@ object BoardGamer {
     fun run(X: Int, Y: Int, instructions: List<String>): Board {
         var board = Board(Pair(X, Y))
         instructions.forEach {
-            println("Applying instruction \"$it\" on current board:")
-            board.draw()
+            println("After instruction \"$it\":")
             board = board.apply(it)
+            board.draw()
         }
-        println("Final board, after all instructions:")
-        board.draw()
 
         return board
     }
