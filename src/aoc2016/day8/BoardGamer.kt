@@ -1,28 +1,26 @@
 package aoc2016.day8
 
-import kotlin.properties.Delegates
-
-data class Cell(val x: Int, val y: Int) {
-    var on: Boolean by Delegates.observable(false) {
-        _, old, new ->
-//        println("DEBUG: Changing $this.on: $old -> $new")
-    }
-
+data class Cell(val x: Int, val y: Int, var on: Boolean = false) {
     fun draw() = if (on) "☃" else "-"
-
-    override fun toString() = "Cell(x=$x, y=$y, on=$on)"
 }
 
 data class Board(val size: Pair<Int, Int>) {
     val cells: List<List<Cell>> by lazy {
-        IntRange(0, size.first).map { x->
-            IntRange(0, size.second).map { y->
+        IntRange(0, size.second - 1).map { x->
+            IntRange(0, size.first - 1).map { y->
                 Cell(x, y)
             }
         }
     }
 
+    // "rect 3x3"
     private val rectInstrMatcher = Regex("""rect (\d)+x(\d+)""")
+
+    // "rotate row y=0 by 4"
+    private val rotateRowInstrMatcher = Regex("""rotate row y=(\d+) by (\d+)""")
+
+    // "rotate column x=1 by 1"
+    private val rotateColInstrMatcher = Regex("""rotate column x=(\d+) by (\d+)""")
 
     fun apply(instructionText: String): Board {
         val rectMatch = rectInstrMatcher.matchEntire(instructionText)
@@ -30,15 +28,43 @@ data class Board(val size: Pair<Int, Int>) {
             val (a, b) = rectMatch.destructured
             applyRectInstruction(a.toInt(), b.toInt())
         }
+
+        val rotateRowMatch = rotateRowInstrMatcher.matchEntire(instructionText)
+        if (rotateRowMatch != null) {
+            val (row, shift) = rotateRowMatch.destructured
+            applyRotateRowInstruction(row.toInt(), shift.toInt())
+        }
+
+        val rotateColMatch = rotateColInstrMatcher.matchEntire(instructionText)
+        if (rotateColMatch != null) {
+            val (col, shift) = rotateColMatch.destructured
+            applyRotateColInstruction(col.toInt(), shift.toInt())
+        }
+
         return this
     }
 
-    private fun  applyRectInstruction(a: Int, b: Int) {
-        IntRange(0, a).forEach { x ->
-            IntRange(0, b).forEach { y ->
+    private fun applyRectInstruction(a: Int, b: Int) {
+        IntRange(0, b - 1).forEach { x ->
+            IntRange(0, a - 1).forEach { y ->
                 cells[x][y].on = true
             }
         }
+    }
+
+    private fun applyRotateRowInstruction(row: Int, shift: Int) {
+        // ☃ ☃ ☃ -  - -  -
+        // -  -  - - ☃ ☃ ☃ 4 _> 1 (7 - 4 + 4
+        val size = cells[row].size
+        val rowOriginal = cells[row].map { it.copy() }
+        cells[row].forEachIndexed { i, cell ->
+            val indexBeingShifted = (size - shift + i) % 7
+            cell.on = rowOriginal[indexBeingShifted].on
+        }
+    }
+
+    private fun applyRotateColInstruction(col: Int, shift: Int) {
+        // TODO
     }
 
     fun draw() {
