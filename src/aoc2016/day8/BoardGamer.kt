@@ -1,7 +1,7 @@
 package aoc2016.day8
 
 data class Cell(val x: Int, val y: Int, var on: Boolean = false) {
-    fun draw() = if (on) "☃" else "-"
+    fun draw() = if (on) "#" else "-"
 }
 
 data class Board(val size: Pair<Int, Int>) {
@@ -14,7 +14,7 @@ data class Board(val size: Pair<Int, Int>) {
     }
 
     // "rect 3x3"
-    private val rectInstrMatcher = Regex("""rect (\d)+x(\d+)""")
+    private val rectInstrMatcher = Regex("""rect (\d+)x(\d+)""")
 
     // "rotate row y=0 by 4"
     private val rotateRowInstrMatcher = Regex("""rotate row y=(\d+) by (\d+)""")
@@ -73,7 +73,7 @@ data class Board(val size: Pair<Int, Int>) {
     fun draw() {
         cells.forEach { row ->
             println()
-            println(row.map(Cell::draw).joinToString(""))
+            println(row.map(Cell::draw).joinToString(" "))
         }
     }
 }
