@@ -27,7 +27,7 @@ internal class UncharacteristicTest {
 
     @Test fun decompresses_Problem() {
         val data = TestResourceReader.readFile("resources/aoc2016/day9/input.txt")
-        val decompressed = Uncharacteristic.decompress(data)
+        val decompressed = Uncharacteristic.decompress(data.lines()[0])
         assertEquals(1, decompressed.length)
     }
 }
