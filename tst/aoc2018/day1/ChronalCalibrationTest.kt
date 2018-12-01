@@ -16,7 +16,7 @@ internal class ChronalCalibrationTest {
 
         println("First duplicate frequency seen: ${ChronalCalibration.findFirstDuplicateFrequency(data)}")
 
-        Assertions.assertEquals(2, ChronalCalibration.findFirstDuplicateFrequency(data))
+        Assertions.assertEquals(413, ChronalCalibration.findFirstDuplicateFrequency(data))
     }
 
     @Test fun firstDuplicateFrequency_Problem2_TestData1() {

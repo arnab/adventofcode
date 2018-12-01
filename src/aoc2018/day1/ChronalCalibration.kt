@@ -12,7 +12,15 @@ object ChronalCalibration {
     }
 
     fun findFirstDuplicateFrequency(frequencyChanges: List<Int>): Int? {
-        return calculateFrequencies(frequencyChanges).findFirstDuplicate()
+        val currentFrequencyChanges: MutableList<Int> = mutableListOf()
+        var duplicate: Int? = null
+
+        while (duplicate == null) {
+            currentFrequencyChanges.addAll(frequencyChanges)
+            duplicate = calculateFrequencies(currentFrequencyChanges).findFirstDuplicate()
+        }
+
+        return duplicate
     }
 
 }
