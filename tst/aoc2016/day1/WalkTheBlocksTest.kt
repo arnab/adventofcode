@@ -3,6 +3,7 @@ package aoc2016.day1
 import aoc.util.TestResourceReader
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
+import kotlin.test.assertEquals
 
 class WalkTheBlocksTest {
     fun walkTheBlockWithInputData(data: String): Int {
