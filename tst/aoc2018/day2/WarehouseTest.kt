@@ -12,9 +12,8 @@ class WarehouseTest {
             .split("\n")
             .map { it.split("").filterNot { c -> c.isEmpty() } }
 
-        val countsByLetterPerWord = Warehouse.countsByLetterPerWord(data)
-
-//        Assertions.assertEquals(0, Warehouse.calculateChecksum(countsByLetterPerWord))
+        val boxesWithCountByLetters = Warehouse.boxesWithCountByLetters(data)
+        Assertions.assertEquals(7657, Warehouse.calculateChecksum(boxesWithCountByLetters))
     }
 
     @Test
@@ -31,9 +30,8 @@ class WarehouseTest {
             .split("\n")
             .map { it.split("").filterNot { c -> c.isEmpty() } }
 
-        val countsByLetterPerWord = Warehouse.countsByLetterPerWord(data)
-
-//        Assertions.assertEquals(0, Warehouse.calculateChecksum(countsByLetterPerWord))
+        val boxesWithCountByLetters = Warehouse.boxesWithCountByLetters(data)
+        Assertions.assertEquals(12, Warehouse.calculateChecksum(boxesWithCountByLetters))
     }
 
 }
