@@ -12,4 +12,20 @@ object Warehouse {
         return boxesWithTwoDuplicateLetters * boxesWithThreeDuplicateLetters
     }
 
+    fun reportPrototypeBoxes(boxes: List<List<String>>): Unit {
+        boxes.forEach { box ->
+            val protypeBoxes = boxes.filter { otherBox -> isProtypeBoxOf(box, otherBox) }
+            if (protypeBoxes.isNotEmpty()) {
+                println("Box: ${box} => Prototypes: ${protypeBoxes}")
+            }
+        }
+    }
+
+    private fun isProtypeBoxOf(box: List<String>, otherBox: List<String>): Boolean {
+        val lettersDifferring = box.filterIndexed { i, letter ->
+            letter != otherBox.get(i)
+        }
+
+        return lettersDifferring.size == 1
+    }
 }
