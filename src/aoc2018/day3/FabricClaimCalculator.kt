@@ -10,7 +10,10 @@ data class Claim(
     val bottomRightSquare: Square = Square(left + width - 1, top + height - 1)
 ) {
     fun includesSquare(square: Square): Boolean {
-        return true
+        return topLeftSquare.x <= square.x &&
+                topLeftSquare.y <= square.y &&
+                bottomRightSquare.x >= square.x &&
+                bottomRightSquare.y >= square.y
     }
 }
 
