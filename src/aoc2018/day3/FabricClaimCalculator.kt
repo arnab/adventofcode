@@ -1,5 +1,7 @@
 package aoc2018.day3
 
+data class Square(val x: Int, val y: Int)
+
 data class Claim(
     val id: Int,
     val left: Int,
@@ -17,15 +19,12 @@ data class Claim(
     }
 }
 
-data class Square(val x: Int, val y: Int)
-
 object FabricClaimCalculator {
     fun findConflictingSquares(claims: List<Claim>): List<Square> {
         val maxX = claims.maxBy { it.bottomRightSquare.x }!!.bottomRightSquare.x
         val maxY = claims.maxBy { it.bottomRightSquare.y }!!.bottomRightSquare.y
 
         val conflictingSquares = mutableListOf<Square>()
-
         for (x in 0..maxX) {
             for (y in 0..maxY) {
                 val square = Square(x,y)
@@ -37,6 +36,24 @@ object FabricClaimCalculator {
         }
 
         return conflictingSquares.distinct()
+    }
+
+    fun findNonConflictingClaims(claims: List<Claim>): List<Claim> {
+        val maxX = claims.maxBy { it.bottomRightSquare.x }!!.bottomRightSquare.x
+        val maxY = claims.maxBy { it.bottomRightSquare.y }!!.bottomRightSquare.y
+
+        val conflictingClaims = mutableListOf<Claim>()
+        for (x in 0..maxX) {
+            for (y in 0..maxY) {
+                val square = Square(x,y)
+                val claimsIncludingSquare = claims.filter { it.includesSquare(square) }
+                if (claimsIncludingSquare.size > 1) {
+                    conflictingClaims.addAll(claimsIncludingSquare)
+                }
+            }
+        }
+
+        return claims - conflictingClaims.distinct()
     }
 
 }

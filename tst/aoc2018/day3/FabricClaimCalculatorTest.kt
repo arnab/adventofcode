@@ -36,6 +36,33 @@ class FabricClaimCalculatorTest {
         Assertions.assertEquals(4, conflictingSquares.size)
     }
 
+    @Test
+    fun nonConflictingClaims_Problem1() {
+        val claims = parseData(TestResourceReader.readFile("resources/aoc2018/day3/input.txt"))
+
+        val nonConflictingClaims = FabricClaimCalculator.findNonConflictingClaims(claims)
+        println("Non Conflicting Claims: $nonConflictingClaims")
+
+        Assertions.assertEquals(1, nonConflictingClaims.size)
+        Assertions.assertEquals(3, nonConflictingClaims.first().id)
+    }
+
+    @Test
+    fun nonConflictingClaims_Example1() {
+        val claims = parseData(
+            """
+                #1 @ 1,3: 4x4
+                #2 @ 3,1: 4x4
+                #3 @ 5,5: 2x2
+                """.trimIndent())
+
+        val nonConflictingClaims = FabricClaimCalculator.findNonConflictingClaims(claims)
+        println("Non Conflicting Claims: $nonConflictingClaims")
+
+        Assertions.assertEquals(1, nonConflictingClaims.size)
+        Assertions.assertEquals(3, nonConflictingClaims.first().id)
+    }
+
     private fun parseDataLine(dataLine: String): Claim {
         val matchResult = dataLineRegex.find(dataLine)
         val (id, left, top, width, height) = matchResult!!.destructured
