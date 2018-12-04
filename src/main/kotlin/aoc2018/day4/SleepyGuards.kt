@@ -3,9 +3,6 @@ package aoc2018.day4
 import java.time.Duration
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
-import java.time.LocalTime
-import java.time.LocalDate
-
 
 
 data class SleepDuration(val start: LocalDateTime, var end: LocalDateTime?)
@@ -75,9 +72,30 @@ object SleepyGuards {
         return allMinutes.groupingBy { it }.eachCount().maxBy { it.value }!!.key
     }
 
-    fun mostSleepyGuardOnAnyMinute(guards: Map<Int, List<SleepDuration>>): Pair<Int, List<SleepDuration>> {
-        return guards.maxBy { mostSleepyMinute(it.key, it.value) }!!
-                .toPair()
+    fun mostSleepyGuardOnAnyMinute(guards: Map<Int, List<SleepDuration>>): Pair<Int, Pair<Int, Int>>? {
+        val guardsWithSleepyMinutesCount = guards.map { (guardId, sleepDurations) ->
+            val sleepyMinutesCount = sleepDurations.fold(mutableMapOf<Int, Int>()) { countByMinute, (start, end) ->
+                var currentTime = start
+                do {
+                    val currentMinute = currentTime.minute
+                    countByMinute[currentMinute] = countByMinute.getOrDefault(currentMinute, 0) + 1
+                    currentTime = currentTime.plus(Duration.ofMinutes(1))
+                } while (currentTime <= end)
+                countByMinute
+            }
+            Pair(guardId, sleepyMinutesCount)
+        }
+
+        val guardsWithMostSleepyMinute = guardsWithSleepyMinutesCount
+                .filter { (guardId, sleepyMinutesCount ) -> sleepyMinutesCount.isNotEmpty() }
+                .map { (guardId, sleepyMinutesCount ) ->
+                    val mostSleepyMinuteWithCount = sleepyMinutesCount.maxBy { it.value }
+                    Pair(guardId, Pair(mostSleepyMinuteWithCount!!.key, mostSleepyMinuteWithCount.value))
+        }
+
+        return guardsWithMostSleepyMinute.maxBy { (_, minuteWithCount) ->
+            minuteWithCount.second
+        }
     }
 
 }

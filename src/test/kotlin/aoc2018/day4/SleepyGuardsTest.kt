@@ -16,22 +16,24 @@ class SleepyGuardsTest {
         val answer = guardId * mostSleepyMinute
         println("Most Sleepy: #$guardId ($totalSleepyMinutes min asleep, most on min $mostSleepyMinute). Answer: $answer!")
 
-        Assertions.assertEquals(10, guardId)
-        Assertions.assertEquals(50, totalSleepyMinutes)
-        Assertions.assertEquals(24, mostSleepyMinute)
+        Assertions.assertEquals(2851, guardId)
+        Assertions.assertEquals(524, totalSleepyMinutes)
+        Assertions.assertEquals(44, mostSleepyMinute)
     }
 
     @Test
     fun part2_mostSleepyGuardOnAMinute_Problem1() {
         val guardsWithSleepDurations = parseData(TestResourceReader.readFile("aoc2018/day4/input.txt"))
 
-        val (guardId, sleepDurations) = SleepyGuards.mostSleepyGuardOnAnyMinute(guardsWithSleepDurations)
-        val mostSleepyMinute = SleepyGuards.mostSleepyMinute(guardId, sleepDurations)
+        val (guardId, mostSleepyMinuteWithCount) = SleepyGuards.mostSleepyGuardOnAnyMinute(guardsWithSleepDurations)!!
+        val mostSleepyMinute = mostSleepyMinuteWithCount.first
+        val mostSleepyMinuteCount = mostSleepyMinuteWithCount.second
         val answer = guardId * mostSleepyMinute
-        println("Most Sleepy: #$guardId, on min $mostSleepyMinute. Answer: $answer!")
+        println("Most Sleepy: #$guardId, on min $mostSleepyMinute, count: $mostSleepyMinuteCount. Answer: $answer!")
 
-        Assertions.assertEquals(1657, guardId)
-        Assertions.assertEquals(49, mostSleepyMinute)
+        Assertions.assertEquals(733, guardId)
+        Assertions.assertEquals(25, mostSleepyMinute)
+        Assertions.assertEquals(16, mostSleepyMinuteCount)
     }
 
     @Test
@@ -89,13 +91,15 @@ class SleepyGuardsTest {
             [1518-11-05 00:55] wakes up
         """.trimIndent())
 
-        val (guardId, sleepDurations) = SleepyGuards.mostSleepyGuardOnAnyMinute(guardsWithSleepDurations)
-        val mostSleepyMinute = SleepyGuards.mostSleepyMinute(guardId, sleepDurations)
+        val (guardId, mostSleepyMinuteWithCount) = SleepyGuards.mostSleepyGuardOnAnyMinute(guardsWithSleepDurations)!!
+        val mostSleepyMinute = mostSleepyMinuteWithCount.first
+        val mostSleepyMinuteCount = mostSleepyMinuteWithCount.second
         val answer = guardId * mostSleepyMinute
-        println("Most Sleepy: #$guardId, on min $mostSleepyMinute. Answer: $answer!")
+        println("Most Sleepy: #$guardId, on min $mostSleepyMinute, count: $mostSleepyMinuteCount. Answer: $answer!")
 
         Assertions.assertEquals(99, guardId)
         Assertions.assertEquals(45, mostSleepyMinute)
+        Assertions.assertEquals(3, mostSleepyMinuteCount)
     }
 
     private fun parseData(data: String): Map<Int, List<SleepDuration>> {
