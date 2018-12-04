@@ -10,7 +10,15 @@ class SleepyGuardsTest {
     fun part1_mostSleepyGuard_Problem1() {
         val guardsWithSleepDurations = parseData(TestResourceReader.readFile("aoc2018/day4/input.txt"))
 
-        Assertions.assertEquals(4, 2)
+        val (guardId, sleepDurations) = SleepyGuards.mostSleepyGuard(guardsWithSleepDurations)
+        val totalSleepyMinutes = SleepyGuards.totalSleepDuration(sleepDurations)
+        val mostSleepyMinute = SleepyGuards.mostSleepyMinute(sleepDurations)
+        val answer = guardId * mostSleepyMinute
+        println("Most Sleepy: #$guardId ($totalSleepyMinutes min asleep, most on min $mostSleepyMinute). Answer: $answer!")
+
+        Assertions.assertEquals(10, guardId)
+        Assertions.assertEquals(50, totalSleepyMinutes)
+        Assertions.assertEquals(24, mostSleepyMinute)
     }
 
     @Test
@@ -35,7 +43,15 @@ class SleepyGuardsTest {
             [1518-11-05 00:55] wakes up
         """.trimIndent())
 
-        Assertions.assertEquals(4, 2)
+        val (guardId, sleepDurations) = SleepyGuards.mostSleepyGuard(guardsWithSleepDurations)
+        val totalSleepyMinutes = SleepyGuards.totalSleepDuration(sleepDurations)
+        val mostSleepyMinute = SleepyGuards.mostSleepyMinute(sleepDurations)
+        val answer = guardId * mostSleepyMinute
+        println("Most Sleepy: #$guardId ($totalSleepyMinutes min asleep, most on min $mostSleepyMinute). Answer: $answer!")
+
+        Assertions.assertEquals(10, guardId)
+        Assertions.assertEquals(50, totalSleepyMinutes)
+        Assertions.assertEquals(24, mostSleepyMinute)
     }
 
     private fun parseData(data: String): Map<Int, List<SleepDuration>> {
