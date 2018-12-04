@@ -8,16 +8,16 @@ class SleepyGuardsTest {
 
     @Test
     fun part1_mostSleepyGuard_Problem1() {
-        val guardSchedules = parseData(TestResourceReader.readFile("aoc2018/day4/input.txt"))
+        val guardsWithSleepDurations = parseData(TestResourceReader.readFile("aoc2018/day4/input.txt"))
 
         Assertions.assertEquals(4, 2)
     }
 
     @Test
     fun part1_mostSleepyGuard_Example1() {
-        val guardSchedules = parseData("""
-            [1518-11-01 00:05] falls asleep
+        val guardsWithSleepDurations = parseData("""
             [1518-11-01 00:00] Guard #10 begins shift
+            [1518-11-01 00:05] falls asleep
             [1518-11-01 00:25] wakes up
             [1518-11-01 00:30] falls asleep
             [1518-11-01 00:55] wakes up
@@ -38,7 +38,7 @@ class SleepyGuardsTest {
         Assertions.assertEquals(4, 2)
     }
 
-    private fun parseData(data: String): Map<Int,List<GuardRecord>> {
+    private fun parseData(data: String): Map<Int, List<SleepDuration>> {
         val rawDataLines = data.split("\n")
                 .sorted()
                 .filterNot(String::isEmpty)

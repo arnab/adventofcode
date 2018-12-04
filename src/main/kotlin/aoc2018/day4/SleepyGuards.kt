@@ -3,25 +3,18 @@ package aoc2018.day4
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
-enum class ActivityType(val type: String) {
-    AWAKE("awake"),
-    ASLEEP("asleep")
-}
-
-data class GuardRecord(val id: Int, val activities: List<Activity>)
-data class Activity(val type: ActivityType, val start: LocalDateTime, val end: LocalDateTime?)
+data class SleepDuration(val start: LocalDateTime, var end: LocalDateTime?)
 
 object SleepyGuards {
-
-    val guardSchedules = mutableMapOf<Int, List<GuardRecord>>()
 
     // Matches: [1518-05-03 00:02] Guard #3469 begins shift
     private val dataLineRegex = """\[([\d\- :].*)\] (.*)""".toRegex()
 
     private val guardIdRegex = """Guard #(\d+) begins shift""".toRegex()
 
-    fun recordGuardSchedules(data: List<String>): Map<Int, List<GuardRecord>> {
-        var currentGuardId :Int? = null
+    fun recordGuardSchedules(data: List<String>): Map<Int, List<SleepDuration>> {
+        val guardRecords = mutableMapOf<Int, MutableList<SleepDuration>>()
+        var lastSeenGuardId :Int? = null
 
         data.forEach { dataLine ->
             val (timestampStr, action) = dataLineRegex.find(dataLine)!!.destructured
@@ -30,34 +23,21 @@ object SleepyGuards {
             when {
                 action.contains("begins shift") -> {
                     val (guardIdStr) = guardIdRegex.find(action)!!.destructured
-                    val guardId = guardIdStr.toInt()
-
-                    if (currentGuardId != null && currentGuardId != guardId) {
-                        TODO("Complete the previous guard's records")
-                    }
-                    currentGuardId = guardId
-
-                    var activity: Activity? = null
-                    if (guardSchedules.containsKey(guardId)) {
-                        activity = guardSchedules[guardId]?.last()?.activities?.last()
-                    } else {
-//                        guardSchedules.
-                    }
-
+                    lastSeenGuardId = guardIdStr.toInt()
+                    guardRecords.putIfAbsent(lastSeenGuardId!!, mutableListOf())
                 }
 
                 action.contains("falls asleep") -> {
-                    println("time: $timestamp")
+                    guardRecords[lastSeenGuardId]!!.add(SleepDuration(timestamp, null))
                 }
 
                 action.contains("wakes up") -> {
-                    println("time: $timestamp")
+                    guardRecords[lastSeenGuardId]!!.last().end = timestamp.minusMinutes(1)
                 }
             }
-
         }
 
-        return guardSchedules
+        return guardRecords
     }
 
 }
