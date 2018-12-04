@@ -28,7 +28,7 @@ internal class GetARoomTest {
         assertEquals(1514, sum)
     }
     @Test fun sumOfValidRoomSectorIds_Problem1() {
-        val data = TestResourceReader.readFile("resources/aoc2016/day4/input.txt")
+        val data = TestResourceReader.readFile("aoc2016/day4/input.txt")
         val sum = GetARoom.sumOfValidRoomSectorIds(data)
         assertEquals(278221, sum)
     }
@@ -38,7 +38,7 @@ internal class GetARoomTest {
     }
 
     @Test fun sectorIdOfNorthPoleRoom() {
-        val data = TestResourceReader.readFile("resources/aoc2016/day4/input.txt")
+        val data = TestResourceReader.readFile("aoc2016/day4/input.txt")
         val northPoleObjectStorageRoom = GetARoom.filterValidRooms(data).find { it.name == "northpole object storage" }
         assertEquals(267, northPoleObjectStorageRoom!!.sectorId)
     }

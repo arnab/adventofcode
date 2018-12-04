@@ -11,13 +11,13 @@ class FabricClaimCalculatorTest {
 
     @Test
     fun conflictingSquares_Problem1() {
-        val claims = parseData(TestResourceReader.readFile("resources/aoc2018/day3/input.txt"))
+        val claims = parseData(TestResourceReader.readFile("aoc2018/day3/input.txt"))
 //        println("Claims data: $claims")
 
         val conflictingSquares = FabricClaimCalculator.findConflictingSquares(claims)
 //        println("Conflicting Squares: $conflictingSquares")
 
-        Assertions.assertEquals(0, conflictingSquares.size)
+        Assertions.assertEquals(121259, conflictingSquares.size)
     }
 
     @Test
@@ -38,13 +38,13 @@ class FabricClaimCalculatorTest {
 
     @Test
     fun nonConflictingClaims_Problem1() {
-        val claims = parseData(TestResourceReader.readFile("resources/aoc2018/day3/input.txt"))
+        val claims = parseData(TestResourceReader.readFile("aoc2018/day3/input.txt"))
 
         val nonConflictingClaims = FabricClaimCalculator.findNonConflictingClaims(claims)
         println("Non Conflicting Claims: $nonConflictingClaims")
 
         Assertions.assertEquals(1, nonConflictingClaims.size)
-        Assertions.assertEquals(3, nonConflictingClaims.first().id)
+        Assertions.assertEquals(239, nonConflictingClaims.first().id)
     }
 
     @Test

@@ -34,7 +34,7 @@ class WalkTheBlocksTest {
 
     @Test
     fun calculateShortestPathDistance_ProblemInput() {
-        val distance = walkTheBlockWithInputDataFromFile("resources/aoc2016/day1/input.txt")
+        val distance = walkTheBlockWithInputDataFromFile("aoc2016/day1/input.txt")
         assertEquals(234, distance)
     }
 
@@ -57,7 +57,7 @@ class WalkTheBlocksTest {
 
     @Test
     fun findFirstRepeatedLocation_ProblemInput() {
-        val location = findFirstRepeatedLocationWithInputDataFromFile("resources/aoc2016/day1/input.txt")
+        val location = findFirstRepeatedLocationWithInputDataFromFile("aoc2016/day1/input.txt")
         val distance = location?.distanceFrom(startingLocation)
         assertEquals(113, distance)
     }

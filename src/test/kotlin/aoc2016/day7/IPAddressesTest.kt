@@ -50,7 +50,7 @@ internal class IPAddressesTest {
     }
 
     @Test fun supportsSsl_Problem() {
-        val data = TestResourceReader.readFile("resources/aoc2016/day7/input.txt")
-        assertEquals(1, IPAddresses.supportsSsl(data).count())
+        val data = TestResourceReader.readFile("aoc2016/day7/input.txt")
+        assertEquals(258, IPAddresses.supportsSsl(data).count())
     }
 }

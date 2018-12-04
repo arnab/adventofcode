@@ -8,7 +8,7 @@ class WarehouseTest {
 
     @Test
     fun calculateCheckSum_Problem1() {
-        val data = TestResourceReader.readFile("resources/aoc2018/day2/input.txt")
+        val data = TestResourceReader.readFile("aoc2018/day2/input.txt")
             .split("\n")
             .map { it.split("").filterNot { c -> c.isEmpty() } }
 
@@ -52,7 +52,7 @@ class WarehouseTest {
 
     @Test
     fun findPrototypeBoxes_Problem2() {
-        val data = TestResourceReader.readFile("resources/aoc2018/day2/input.txt")
+        val data = TestResourceReader.readFile("aoc2018/day2/input.txt")
             .split("\n")
             .map { it.split("").filterNot { c -> c.isEmpty() } }
 

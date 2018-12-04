@@ -29,15 +29,15 @@ internal class BoardGamerTest {
 
         val cellStates = board.cells.map { it.map(Cell::draw).joinToString("") }
         val expectedCellStates = listOf(
-                "-☃--☃-☃",
-                "☃-☃----",
-                "-☃-----"
+                "-#--#-#",
+                "#-#----",
+                "-#-----"
         )
         assertEquals(expectedCellStates, cellStates)
     }
 
     @Test fun run_Problem() {
-        val board = boardWithInstructionsFromFile(50, 6, "resources/aoc2016/day8/input.txt")
-        assertEquals(1, totalLit(board))
+        val board = boardWithInstructionsFromFile(50, 6, "aoc2016/day8/input.txt")
+        assertEquals(110, totalLit(board))
     }
 }

@@ -7,7 +7,7 @@ import org.junit.jupiter.api.Test
 internal class ChronalCalibrationTest {
 
     @Test fun firstDuplicateFrequency_Problem2() {
-        val data = TestResourceReader.readFile("resources/aoc2018/day1/input.txt")
+        val data = TestResourceReader.readFile("aoc2018/day1/input.txt")
             .split("\n")
             .map { it.toInt() }
 

@@ -18,12 +18,12 @@ internal class FancyLooKeyTest {
                               LURDL
                               UUUUD""".trimIndent()
         val looKey = decipherLooKeyForInstructions(instructions)
-        assertEquals("5DB3", looKey)
+        assertEquals("2CB3", looKey)
     }
 
     @Test
     fun decipher_Problem1() {
-        val looKey = decipherLooKeyForInstructionsFromFile("resources/aoc2016/day2/input1.txt")
+        val looKey = decipherLooKeyForInstructionsFromFile("aoc2016/day2/input1.txt")
         assertEquals("B3DB8", looKey)
     }
 

@@ -29,7 +29,7 @@ internal class SignalToNoiseTest {
     }
 
     @Test fun findRealMessage_ProblemInput() {
-        val data = TestResourceReader.readFile("resources/aoc2016/day6/input.txt")
+        val data = TestResourceReader.readFile("aoc2016/day6/input.txt")
         val realMessage = SignalToNoise.findRealMessage(data)
         assertEquals("brhailro", realMessage)
     }

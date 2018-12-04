@@ -31,7 +31,7 @@ internal class TrianglesTest {
 
     @Test
     fun countValid_Problem1() {
-        val count = countValidTrianglesFromFile("resources/aoc2016/day3/input.txt")
+        val count = countValidTrianglesFromFile("aoc2016/day3/input.txt")
         assertEquals(982, count)
     }
 
@@ -49,7 +49,7 @@ internal class TrianglesTest {
 
     @Test
     fun countValidVertical_Problem1() {
-        val count = countValidTrianglesVerticalFromFile("resources/aoc2016/day3/input.txt")
+        val count = countValidTrianglesVerticalFromFile("aoc2016/day3/input.txt")
         assertEquals(1826, count)
     }
 }

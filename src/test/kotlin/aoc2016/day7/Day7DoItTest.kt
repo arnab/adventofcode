@@ -28,7 +28,7 @@ internal class Day7DoItTest {
 
     @Test fun supportsTls_5() {
         val data = "aaa[kek]ekek"
-        assertEquals(false, Day7DoIt.supportsTls(data))
+        assertEquals(true, Day7DoIt.supportsTls(data))
     }
 
     @Test fun supportsTls_6() {
@@ -54,9 +54,9 @@ internal class Day7DoItTest {
     }
 
     @Test fun doit_Problem() {
-        val data = TestResourceReader.readFile("resources/aoc2016/day7/input.txt")
+        val data = TestResourceReader.readFile("aoc2016/day7/input.txt")
         val res = Day7DoIt.doit(data)
-        assertEquals(0, res)
+        assertEquals(242, res)
     }
 
 }

@@ -18,12 +18,12 @@ class LooKeyTest {
                               LURDL
                               UUUUD""".trimIndent()
         val looKey = decipherLooKeyForInstructions(instructions)
-        assertEquals(1985, looKey)
+        assertEquals(4985, looKey)
     }
 
     @Test
     fun decipher_Problem1() {
-        val looKey = decipherLooKeyForInstructionsFromFile("resources/aoc2016/day2/input1.txt")
+        val looKey = decipherLooKeyForInstructionsFromFile("aoc2016/day2/input1.txt")
         assertEquals(82958, looKey)
     }
 }
