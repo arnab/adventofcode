@@ -54,7 +54,9 @@ object SleepyGuards {
         return sleepDurations.map { Duration.between(it.start, it.end!!.plusMinutes(1)).toMinutes() }.sum()
     }
 
-    fun mostSleepyMinute(sleepDurations: List<SleepDuration>): Int {
+    fun mostSleepyMinute(guardId: Int, sleepDurations: List<SleepDuration>): Int {
+        println("Analyzing Guard #$guardId")
+
         val allMinutes = mutableListOf<Int>()
 
         sleepDurations.forEach { sleepDuration ->
@@ -66,7 +68,16 @@ object SleepyGuards {
             } while (start <= end)
         }
 
+        if (allMinutes.isEmpty()) {
+            println("No minutes found!")
+            return -1
+        }
         return allMinutes.groupingBy { it }.eachCount().maxBy { it.value }!!.key
+    }
+
+    fun mostSleepyGuardOnAnyMinute(guards: Map<Int, List<SleepDuration>>): Pair<Int, List<SleepDuration>> {
+        return guards.maxBy { mostSleepyMinute(it.key, it.value) }!!
+                .toPair()
     }
 
 }
