@@ -1,7 +1,6 @@
 package aoc2018.day5
 
 import aoc.util.TestResourceReader
-import org.junit.Ignore
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
 
