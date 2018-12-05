@@ -17,7 +17,7 @@ internal class PolymerTest {
     @Test
     fun part1_reducePolymer_Example1() {
         val rawPolymers = parseData("dabAcCaCBAcCcaDA")
-        val reducedPolymer = Polymer.reduce(rawPolymers)
+        val reducedPolymer = Polymer.reduce(rawPolymers, true)
         val reducedPolymerStr = reducedPolymer.map(PolymerUnit::type).joinToString("")
         Assertions.assertEquals("dabCBAcaDA", reducedPolymerStr)
     }
