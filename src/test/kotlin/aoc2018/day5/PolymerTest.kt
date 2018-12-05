@@ -22,6 +22,19 @@ internal class PolymerTest {
         Assertions.assertEquals("dabCBAcaDA", reducedPolymerStr)
     }
 
+    @Test
+    fun part2_reducePolymer_Problem1() {
+        val rawPolymers = parseData(TestResourceReader.readFile("aoc2018/day5/input.txt"))
+    }
+
+    @Test
+    fun part2_reducePolymer_Example1() {
+        val rawPolymers = parseData("dabAcCaCBAcCcaDA")
+        val reducedPolymer = Polymer.reduceByRemovingBadUnits(rawPolymers, true)
+        val reducedPolymerStr = reducedPolymer.map(PolymerUnit::type).joinToString("")
+        Assertions.assertEquals("daDA", reducedPolymerStr)
+    }
+
     private fun parseData(data: String): List<PolymerUnit> {
         return data.split("")
                 .filterNot(String::isEmpty)
