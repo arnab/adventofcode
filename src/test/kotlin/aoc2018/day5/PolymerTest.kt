@@ -11,7 +11,7 @@ internal class PolymerTest {
         val rawPolymers = parseData(TestResourceReader.readFile("aoc2018/day5/input.txt"))
         val reducedPolymer = Polymer.reduce(rawPolymers)
         val reducedPolymerStr = reducedPolymer.map(PolymerUnit::type).joinToString("")
-        Assertions.assertEquals("", reducedPolymerStr)
+        Assertions.assertEquals(9462, reducedPolymerStr.length)
     }
 
     @Test
