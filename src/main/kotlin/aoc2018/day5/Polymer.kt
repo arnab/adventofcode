@@ -28,10 +28,20 @@ object Polymer {
         return reducedUnits
     }
 
-    fun reduceByRemovingBadUnits(rawPolymers: List<PolymerUnit>, debug: Boolean = false): List<PolymerUnit> {
-        return rawPolymers
+    fun reduceByRemovingBadUnits(units: List<PolymerUnit>, debug: Boolean = false): Pair<Char, List<PolymerUnit>> {
+        val allTypes: List<Char> = units.map { it.type.toLowerCase() }.distinct().sorted()
+        val reducedUnitsByRemovedType: List<Pair<Char, List<PolymerUnit>>> = allTypes.map { typeToRemove ->
+            println("Removing $typeToRemove and reducing...")
+            Pair(typeToRemove, reduce(removeUnitsOfType(units, typeToRemove)))
+        }
+
+        return reducedUnitsByRemovedType.minBy { it.second.size }!!
     }
-    
+
+    private fun removeUnitsOfType(units: List<PolymerUnit>, typeToRemove: Char): List<PolymerUnit> {
+        return units.filter { it.type.toLowerCase() != typeToRemove.toLowerCase() }
+    }
+
     private fun reacts(unit: PolymerUnit?, otherUnit: PolymerUnit?): Boolean {
         return unit != null && otherUnit != null &&
                 unit.type.toLowerCase() == otherUnit.type.toLowerCase() &&
