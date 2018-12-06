@@ -9,7 +9,8 @@ data class Point(val id: Int?, val x: Int, val y: Int) {
 }
 
 object Manhattan {
-    fun largestArea(points: List<Point>, debug: Boolean): Int {
+
+    fun largestArea(points: List<Point>): Int {
         val closestPoint: MutableMap<Point, Point> = mutableMapOf()
 
         val maxX = points.maxBy { it.x }!!.x
@@ -60,4 +61,23 @@ object Manhattan {
 
         return pointWithMaxNeighbors!!.second
     }
+
+    fun safeRegionSize(points: List<Point>, safeRegionThreshold: Int): Int {
+        val maxX = points.maxBy { it.x }!!.x
+        val maxY = points.maxBy { it.y }!!.y
+        var safeRegionSize = 0
+
+        for (i in 0..maxX) {
+            for (j in 0..maxY) {
+                val currentGridPoint = Point(null, i, j)
+                val distancesSum = points.map { it.distanceTo(currentGridPoint) }.sum()
+                if (distancesSum < safeRegionThreshold) {
+                    safeRegionSize++
+                }
+            }
+        }
+
+        return safeRegionSize
+    }
+
 }
