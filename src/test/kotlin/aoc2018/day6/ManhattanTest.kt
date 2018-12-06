@@ -8,14 +8,14 @@ internal class ManhattanTest {
 
     @Test
     fun part1_LargestArea_Problem1() {
-        val coordinates = parseData(TestResourceReader.readFile("aoc2018/day6/input.txt"))
-        val largestArea = Manhattan.largestArea(coordinates, true)
-        Assertions.assertEquals(1, largestArea)
+        val points = parseData(TestResourceReader.readFile("aoc2018/day6/input.txt"))
+        val largestArea = Manhattan.largestArea(points, true)
+        Assertions.assertEquals(5187, largestArea)
     }
 
     @Test
     fun part1_LargestArea_Example1() {
-        val coordinates = parseData("""
+        val points = parseData("""
             1, 1
             1, 6
             8, 3
@@ -23,15 +23,15 @@ internal class ManhattanTest {
             5, 5
             8, 9
         """.trimIndent())
-        val largestArea = Manhattan.largestArea(coordinates, true)
+        val largestArea = Manhattan.largestArea(points, true)
         Assertions.assertEquals(17, largestArea)
     }
 
-    private fun parseData(data: String): List<Coordinate> {
+    private fun parseData(data: String): List<Point> {
         return data.split("\n")
                 .filterNot(String::isEmpty)
                 .map { it.split(", ") }
-                .map { Coordinate(it.first().toInt(), it.last().toInt()) }
+                .mapIndexed { i, (x, y) -> Point(i+1, x.toInt(), y.toInt()) }
     }
 
 }
