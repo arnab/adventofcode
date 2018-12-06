@@ -1,17 +1,19 @@
 package aoc2018.day5
 
 import aoc.util.TestResourceReader
+import org.junit.Ignore
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
 
 internal class PolymerTest {
 
+    @Ignore // Takes too long, use PolymerOptimizedTests
     @Test
     fun part1_reducePolymer_Problem1() {
-        val rawPolymers = parseData(TestResourceReader.readFile("aoc2018/day5/input.txt"))
-        val reducedPolymer = Polymer.reduce(rawPolymers)
-        val reducedPolymerStr = reducedPolymer.map(PolymerUnit::type).joinToString("")
-        Assertions.assertEquals(9462, reducedPolymerStr.length)
+//        val rawPolymers = parseData(TestResourceReader.readFile("aoc2018/day5/input.txt"))
+//        val reducedPolymer = Polymer.reduce(rawPolymers)
+//        val reducedPolymerStr = reducedPolymer.map(PolymerUnit::type).joinToString("")
+//        Assertions.assertEquals(9462, reducedPolymerStr.length)
     }
 
     @Test
