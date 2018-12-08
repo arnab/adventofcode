@@ -10,7 +10,7 @@ internal class StepsTest {
     fun part1_StepOrder_Problem1() {
         val steps = parseData(TestResourceReader.readFile("aoc2018/day7/input.txt"))
         val stepsInOrder = Steps.calculateOrder(steps)
-        Assertions.assertEquals("", stepsInOrder.map(Step::id).joinToString(""))
+        Assertions.assertEquals("SCLPAMQVUWNHODRTGYKBJEFXZI", stepsInOrder.map(Step::id).joinToString(""))
     }
 
     @Test
