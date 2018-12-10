@@ -27,6 +27,11 @@ internal class MarbleManiaTest {
         Assertions.assertEquals(expectedHighScore, MarbleMania.calculateHighScore(numPlayers, lastMarblePoints))
     }
 
+    @Test
+    fun part2_HighScore_Problem1() {
+        Assertions.assertEquals(3628143500, MarbleMania.calculateHighScore(405, 71700 * 100))
+    }
+
     private val dataLineRegex = """(\d+) players; last marble is worth (\d+) points*""".toRegex()
     private fun parseData(data: String): Pair<Int, Int> {
         val (numPlayers, lastMarblePoints) = dataLineRegex.find(data)!!.destructured
