@@ -10,7 +10,7 @@ internal class MarbleManiaTest {
     @Test
     fun part1_HighScore_Problem1() {
         val (numPlayers, lastMarblePoints)  = parseData("405 players; last marble is worth 71700 points")
-        Assertions.assertEquals(1, MarbleMania.calculateHighScore(numPlayers, lastMarblePoints))
+        Assertions.assertEquals(428690, MarbleMania.calculateHighScore(numPlayers, lastMarblePoints))
     }
 
     @ParameterizedTest
@@ -23,7 +23,7 @@ internal class MarbleManiaTest {
     )
     fun part1_HighScore_Examples(data: String, expected: String) {
         val (numPlayers, lastMarblePoints) = parseData(data)
-        val expectedHighScore = expected.toInt()
+        val expectedHighScore = expected.toLong()
         Assertions.assertEquals(expectedHighScore, MarbleMania.calculateHighScore(numPlayers, lastMarblePoints))
     }
 
