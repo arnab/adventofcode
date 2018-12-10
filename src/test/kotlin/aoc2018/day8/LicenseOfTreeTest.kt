@@ -20,6 +20,20 @@ internal class LicenseOfTreeTest {
         Assertions.assertEquals(138, root.sumOfMetadata())
     }
 
+    @Test
+    fun part2_ValueOfRoot_Problem1() {
+        val data = parseData(TestResourceReader.readFile("aoc2018/day8/input.txt"))
+        val root = LicenseOfTree.Node.of(data)
+        Assertions.assertEquals(20083, root.value())
+    }
+
+    @Test
+    fun part2_ValueOfRoot_Example1() {
+        val data = parseData("2 3 0 3 10 11 12 1 1 0 1 99 2 1 1 2")
+        val root = LicenseOfTree.Node.of(data)
+        Assertions.assertEquals(66, root.value())
+    }
+
     private fun parseData(data: String) = data.split(" ").map { it.toInt() }.iterator()
 
 }

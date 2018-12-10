@@ -16,6 +16,13 @@ object LicenseOfTree {
 
         fun sumOfMetadata(): Int = metadata.sum() + children.sumBy(Node::sumOfMetadata)
 
+        fun value(): Int {
+            return if (children.isEmpty())
+                metadata.sum()
+            else
+                metadata.sumBy { children.getOrNull(it - 1)?.value() ?: 0 }
+        }
+
     }
 
 }
