@@ -9,7 +9,9 @@ class PotsTest {
     @Test
     fun part1_Generations_Problem() {
         val (initialState, rules)  = parseData(TestResourceReader.readFile("aoc2018/day12/input.txt"))
-        TODO("complete")
+        val pots = Pots(initialState, rules)
+        val answer = pots.sumAfterNGenerations(20)
+        assertEquals(2736, answer)
     }
 
     @Test
@@ -42,7 +44,7 @@ class PotsTest {
     private fun parseData(data: String): Pair<String,Map<CharSequence, CharSequence>> {
         val lines = data.split("\n").filterNot(String::isEmpty)
 
-        val initialState = lines.first()
+        val initialState = lines.first().removePrefix("initial state: ")
 
         val rules: Map<CharSequence, CharSequence> = lines.drop(1).associate { line ->
             val (key, value) = line.split(" => ", limit = 2)
