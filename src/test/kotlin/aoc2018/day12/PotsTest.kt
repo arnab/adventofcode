@@ -2,16 +2,22 @@ package aoc2018.day12
 
 import aoc.util.TestResourceReader
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.params.ParameterizedTest
+import org.junit.jupiter.params.provider.CsvSource
 import kotlin.test.assertEquals
 
 class PotsTest {
 
-    @Test
-    fun part1_Generations_Problem() {
+    @ParameterizedTest
+    @CsvSource(
+            "20, 2736",
+            "50000000000, 3150000000905"
+    )
+    fun part1_and_2_Generations_Problem(numGen: Long, expectedAnswer: Long) {
         val (initialState, rules)  = parseData(TestResourceReader.readFile("aoc2018/day12/input.txt"))
         val pots = Pots(initialState, rules)
-        val answer = pots.sumAfterNGenerations(20)
-        assertEquals(2736, answer)
+        val answer = pots.sumAfterNGenerations(numGen)
+        assertEquals(expectedAnswer, answer)
     }
 
     @Test

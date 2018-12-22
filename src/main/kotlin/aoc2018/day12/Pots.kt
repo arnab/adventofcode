@@ -2,7 +2,7 @@ package aoc2018.day12
 
 data class Pots(val initialState: String, val rules: Map<CharSequence, CharSequence>) {
 
-    fun sumAfterNGenerations(numGenerations: Int): Long {
+    fun sumAfterNGenerations(numGenerations: Long): Long {
         val seen = mutableMapOf<String, Pair<Long, Long>>()
         var offset = 0L
         var state = initialState
