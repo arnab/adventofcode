@@ -19,6 +19,19 @@ data class Grid(val sizeX: Int, val sizeY: Int, val serial: Int) {
         }.maxBy { it.second }
     }
 
+    fun calculateAreaOfAnySizeWithHighestPower(): Pair<Int, Pair<Point, Int>?>? {
+        // Note: Hack/optimization. As the size increases beyond a certain size,
+        // it is unlikely to have higher total power than smaller boxes. In empirical evidence the optimum
+        // size is ~15. Since it's also expensive to calculate as the size increases,
+        // "optimize" to check only till 20 :D
+
+        return (1 until 21).map { size ->
+            val highestPowerForSize = calculateAreaWithHighestPower(size)
+            println("Highest power for size: $size: $highestPowerForSize")
+            Pair(size, highestPowerForSize)
+        }.maxBy { it.second?.second ?: 0 }
+    }
+
     private fun calculateTotalPowerOfArea(x: Int, y: Int, sizeOfBox: Int): Int {
         return (y until y + sizeOfBox).flatMap { yOfPointInsideBox ->
             (x until x + sizeOfBox).map { xOfPointInsideBox ->

@@ -44,4 +44,32 @@ internal class ChronalChargeTest {
         Assertions.assertEquals(expectedPointAndPower, pointAndPower)
     }
 
+    @ParameterizedTest
+    @CsvSource(
+            "18, 90, 269, 16, 113",
+            "42, 232, 251, 12, 119"
+    )
+    fun part2_AreaWithHighestTotalPowerAnySize_Examples(serial: Int, expectedPointX: Int, expectedPointY: Int, expectedSize: Int, expectedTotalPowerLevel: Int) {
+        val grid = Grid(300, 300, serial)
+        val sizeAndPointAndPower: Pair<Int, Pair<Point, Int>?>? = grid.calculateAreaOfAnySizeWithHighestPower()
+
+        val size = sizeAndPointAndPower?.first
+        Assertions.assertEquals(expectedSize, size)
+
+        val pointAndPower = sizeAndPointAndPower?.second
+        val expectedPointAndPower = Pair(Point(expectedPointX, expectedPointY), expectedTotalPowerLevel)
+        Assertions.assertEquals(expectedPointAndPower, pointAndPower)
+    }
+
+    @Test
+    fun part2_AreaWithHighestTotalPowerAnySize_Problem() {
+        val grid = Grid(300, 300, 1788)
+        val sizeAndPointAndPower: Pair<Int, Pair<Point, Int>?>? = grid.calculateAreaOfAnySizeWithHighestPower()
+
+        val size = sizeAndPointAndPower?.first
+        val point: Point? = sizeAndPointAndPower?.second?.first
+        val power = sizeAndPointAndPower?.second?.second
+        Assertions.assertEquals("142x2657x65", "${point?.x}x${point?.y}${size}x$power")
+    }
+
 }
