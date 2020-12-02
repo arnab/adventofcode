@@ -8,15 +8,19 @@ object BadPwd {
         val chars: String
     )
 
-    fun solve(data: List<PwdSpec>) = data.filter { isValidPassword(it) }.count()
+    fun solve(data: List<PwdSpec>) = data.filter { isValidPasswordByOldPolicy(it) }.count()
 
-    private fun isValidPassword(spec: PwdSpec): Boolean {
+    private fun isValidPasswordByOldPolicy(spec: PwdSpec): Boolean {
         val charCount = spec.chars.filter { it == spec.char }.count()
         return spec.range.contains(charCount)
     }
 
-//    fun solve2(data: List<PwdSpec>): Int {
-//        TODO("Not yet implemented")
-//    }
+    fun solve2(data: List<PwdSpec>)= data.filter { isValidPasswordByNewPolicy(it) }.count()
+
+    private fun isValidPasswordByNewPolicy(spec: PwdSpec): Boolean {
+        val charAtStartIndex = spec.chars[spec.range.first - 1]
+        val charAtEndIndex = spec.chars[spec.range.last - 1]
+        return listOf(charAtStartIndex, charAtEndIndex).filter { it == spec.char }.count() == 1
+    }
 
 }
