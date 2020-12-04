@@ -34,16 +34,15 @@ internal class PassportValidationTest {
         val data = File("src/test/resources/aoc2020/day4/input.txt").readText()
         val passports = PassportValidation.parse(data)
         val countValid = passports.filter { it.isValid() }.count()
-        Assertions.assertEquals(2, countValid)
-    }
-
-    @Test
-    fun `part 2 test`() {
+        Assertions.assertEquals(233, countValid)
     }
 
     @Test
     fun `part 2 real`() {
         val data = File("src/test/resources/aoc2020/day4/input.txt").readText()
+        val passports = PassportValidation.parse(data)
+        val countValid = passports.filter { it.isValidWithStricterRules() }.count()
+        Assertions.assertEquals(111, countValid)
     }
 
 }
