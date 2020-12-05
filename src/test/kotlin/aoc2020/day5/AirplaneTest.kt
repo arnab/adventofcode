@@ -24,14 +24,22 @@ internal class AirplaneTest {
     }
 
     @Test
-    fun `part 2 test`() {
-        Assertions.assertEquals(1, 0)
-    }
-
-    @Test
     fun `part 2 real`() {
-        val data = File("src/test/resources/aoc2020/day5/input.txt").readText()
-        Assertions.assertEquals(1, 0)
+        val data = File("src/test/resources/aoc2020/day5/input.txt").readLines()
+        val seats = data.map { Airplane.findSeat(it) }.sorted()
+
+        // Seat numbers (sorted) increases by 1. So the first one that increases by 2, is the one after my seat.
+        val increments = seats.mapIndexed { i, n -> n - seats[maxOf(i - 1, 0)] }
+        val nearbyMissingSeatIndex = increments.indexOf(2)
+
+        val missingSeat = seats[nearbyMissingSeatIndex] - 1
+        Assertions.assertEquals(657, missingSeat)
+
+        // Sanity checks...
+        Assertions.assertEquals(577, nearbyMissingSeatIndex)
+        Assertions.assertEquals(656, seats[nearbyMissingSeatIndex-1])
+        Assertions.assertEquals(658, seats[nearbyMissingSeatIndex])
+        Assertions.assertEquals(659, seats[nearbyMissingSeatIndex + 1])
     }
 
 }
