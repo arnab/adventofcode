@@ -6,6 +6,11 @@ object CustomsForms {
         val people: List<Person>
     ) {
         fun allAffirmativeAnswers() = people.flatMap { it.affirmativeAnswers }.distinct()
+
+        fun combinedAffirmativeAnswers() = people.flatMap { it.affirmativeAnswers }
+            .groupingBy { it }.eachCount()
+            .filter { countForChar -> countForChar.value == people.size }
+            .keys.toList()
     }
 
     data class Person(

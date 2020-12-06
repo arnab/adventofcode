@@ -40,4 +40,18 @@ internal class CustomsFormsTest {
         Assertions.assertEquals(7027, totalAffirmativeCount)
     }
 
+    @Test
+    fun `part 2 test`() {
+        val groups = CustomsForms.parse(exampleInput)
+        val totalAffirmativeCount = groups.sumBy { it.combinedAffirmativeAnswers().size }
+        Assertions.assertEquals(6, totalAffirmativeCount)
+    }
+
+    @Test
+    fun `part 2 real`() {
+        val groups = CustomsForms.parse(problemInput)
+        val totalAffirmativeCount = groups.sumBy { it.combinedAffirmativeAnswers().size }
+        Assertions.assertEquals(3579, totalAffirmativeCount)
+    }
+
 }
