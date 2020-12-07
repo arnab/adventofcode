@@ -27,8 +27,13 @@ object LuggageProcessing {
         return (bagsContainingType + bagsContainingType.flatMap { findBagsContaining(it, specs) }).distinct()
     }
 
-    fun findBagsContainedIn(type: String, specs: Map<String, List<Pair<String, Int>>>): List<String> {
-        return emptyList()
-    }
+    fun findBagsContainedIn(type: String, specs: Map<String, List<Pair<String, Int>>>) : Int {
+        val containedBagTypes = specs[type]
+        if (containedBagTypes.isNullOrEmpty()) return 1
 
+        return 1 + containedBagTypes.map { (bagType, count) ->
+            val bagsCount = findBagsContainedIn(bagType, specs)
+            count * bagsCount
+        }.sum()
+    }
 }
