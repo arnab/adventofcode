@@ -24,6 +24,19 @@ internal class AirplaneTest {
     }
 
     @Test
+    fun `part 1 test with key insight LOL`() {
+        val actual = Airplane.findSeatWithKeyInsight(testInput.split("\n").first())
+        Assertions.assertEquals(357, actual)
+    }
+
+    @Test
+    fun `part 1 real with key insight LOL`() {
+        val data = File("src/test/resources/aoc2020/day5/input.txt").readLines()
+        val highestSeat = data.map { Airplane.findSeatWithKeyInsight(it) }.maxOrNull()
+        Assertions.assertEquals(926, highestSeat)
+    }
+
+    @Test
     fun `part 2 real`() {
         val data = File("src/test/resources/aoc2020/day5/input.txt").readLines()
         val seats = data.map { Airplane.findSeat(it) }.sorted()

@@ -11,6 +11,18 @@ object Airplane {
         return row * 8 + col
     }
 
+    fun findSeatWithKeyInsight(seatSpec: String): Int {
+        val (rowSpec, colSpec) = seatSpec
+            .replace("B", "1")
+            .replace("F", "0")
+            .replace("L", "0")
+            .replace("R", "1")
+            .splitAtIndex(7)
+        val row = rowSpec.toInt(2)
+        val col = colSpec.toInt(2)
+        return row * 8 + col
+    }
+
     private fun findSeatRecursively(
         seatSpec: String, range: IntRange, lowerIndicator: String, upperIndicator: String
     ): Int {
