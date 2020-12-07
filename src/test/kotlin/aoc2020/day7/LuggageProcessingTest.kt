@@ -23,15 +23,29 @@ internal class LuggageProcessingTest {
     @Test
     fun `part 1 test`() {
         val bagSpecs = LuggageProcessing.parse(exampleInput)
-        val bagTypes = LuggageProcessing.calculateDependencies(bagSpecs)
-        Assertions.assertEquals(1, 1)
+        val bagTypes = LuggageProcessing.findBagsContaining("shiny gold", bagSpecs)
+        Assertions.assertEquals(4, bagTypes.size)
     }
 
     @Test
     fun `part 1 real`() {
         val bagSpecs = LuggageProcessing.parse(problemInput)
-        val bagTypes = LuggageProcessing.calculateDependencies(bagSpecs)
-        Assertions.assertEquals(1, 1)
+        val bagTypes = LuggageProcessing.findBagsContaining("shiny gold", bagSpecs)
+        Assertions.assertEquals(224, bagTypes.size)
+    }
+
+    @Test
+    fun `part 2 test`() {
+        val bagSpecs = LuggageProcessing.parse(exampleInput)
+        val bagTypes = LuggageProcessing.findBagsContainedIn("shiny gold", bagSpecs)
+        Assertions.assertEquals(4, bagTypes.size)
+    }
+
+    @Test
+    fun `part 2 real`() {
+        val bagSpecs = LuggageProcessing.parse(problemInput)
+        val bagTypes = LuggageProcessing.findBagsContainedIn("shiny gold", bagSpecs)
+        Assertions.assertEquals(1, bagTypes.size)
     }
 
 }
