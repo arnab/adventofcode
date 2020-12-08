@@ -32,8 +32,13 @@ object InfiniteLoop {
             val instructionAlreadyEvaluated = state.seenInstructions.contains(state.currentInstruction)
             if (allInstructionsProcessed || instructionAlreadyEvaluated) return state
 
-            val (operator, value) = this.instructions[state.currentInstruction]
-            val nextState = when(operator) {
+            val nextState = evalInstruction(this.instructions[state.currentInstruction], state)
+            return evalRecursively(nextState)
+        }
+
+        private fun evalInstruction(instruction: Pair<String, Int>, state: State): State = instruction.let {
+            (operator, value) ->
+            when(operator) {
                 "nop" -> state.copy(
                     seenInstructions = state.seenInstructions + state.currentInstruction,
                     currentInstruction = state.currentInstruction + 1
@@ -52,7 +57,6 @@ object InfiniteLoop {
 
                 else -> throw IllegalArgumentException("Unknown operator: $operator")
             }
-            return evalRecursively(nextState)
         }
     }
 }
