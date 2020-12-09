@@ -25,15 +25,59 @@ object InfiniteLoop {
             }
         }
 
-        fun eval(): State = evalRecursively(currentState)
+        fun eval(): State = evalSafely(currentState)
 
-        private fun evalRecursively(state: State): State {
+        private fun evalSafely(state: State): State {
             val allInstructionsProcessed = state.currentInstruction >= this.instructions.size
             val instructionAlreadyEvaluated = state.seenInstructions.contains(state.currentInstruction)
             if (allInstructionsProcessed || instructionAlreadyEvaluated) return state
 
             val nextState = evalInstruction(this.instructions[state.currentInstruction], state)
-            return evalRecursively(nextState)
+            return evalSafely(nextState)
+        }
+
+        fun detectAndRepair(): State? {
+            generateAllPossibleInstructions(this.instructions).forEach { instructions ->
+                val program = Program(instructions, State.init())
+
+                try {
+                    // If we successfully execute the program, we are done!
+                    return program.evalAndAbortOnLoops(program.currentState)
+                } catch (e: IllegalArgumentException) {
+                    println("Dang... Still failing... Let's try the next set of tweaked instruction")
+                }
+            }
+
+            return null
+        }
+
+        private fun generateAllPossibleInstructions(
+            instructions: List<Pair<String, Int>>
+        ): Sequence<List<Pair<String, Int>>> {
+            val allInstructionSets = mutableListOf<List<Pair<String, Int>>>()
+            for (i in instructions.indices) {
+                val (operator, value) = instructions[i]
+                if (operator in listOf("nop", "jmp")) {
+                    val newOperator = if (operator == "nop") "jmp" else "nop"
+                    instructions.toMutableList()
+                        .apply { this[i] = Pair(newOperator, value) }
+                        .also { allInstructionSets.add(it) }
+                }
+            }
+            return allInstructionSets.asSequence()
+        }
+
+        private fun evalAndAbortOnLoops(state: State): State {
+            val instructionAlreadyEvaluated = state.seenInstructions.contains(state.currentInstruction)
+            if (instructionAlreadyEvaluated) {
+                throw IllegalArgumentException("Instr #${state.currentInstruction} already evaluated: ${state.seenInstructions}")
+            }
+
+            val allInstructionsProcessed = state.currentInstruction >= this.instructions.size
+            if (allInstructionsProcessed) return state
+
+            val nextState = evalInstruction(this.instructions[state.currentInstruction], state)
+            return evalAndAbortOnLoops(nextState)
         }
 
         private fun evalInstruction(instruction: Pair<String, Int>, state: State): State = instruction.let {

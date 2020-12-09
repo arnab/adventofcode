@@ -33,4 +33,17 @@ class InfiniteLoopTest {
         Assertions.assertEquals(1797, state.currentAccumulatedValue)
     }
 
+    @Test
+    fun `part 2 test`() {
+        val program = InfiniteLoop.Program.parse(exampleInput)
+        val state = program.detectAndRepair()
+        Assertions.assertEquals(8, state!!.currentAccumulatedValue)
+    }
+
+    @Test
+    fun `part 2 real`() {
+        val program = InfiniteLoop.Program.parse(problemInput)
+        val state = program.detectAndRepair()
+        Assertions.assertEquals(1, state!!.currentAccumulatedValue)
+    }
 }
