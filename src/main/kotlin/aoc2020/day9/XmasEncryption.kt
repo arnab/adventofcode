@@ -22,4 +22,19 @@ object XmasEncryption {
         }
         return true.also { println("Satisfied: $match") }
     }
+
+    fun findEncryptionWeakness(numbers: List<Long>, target: Long) =
+        findMatchingSubRange(numbers, target).let { matchingNumbers ->
+            matchingNumbers.minOrNull()!! + matchingNumbers.maxOrNull()!!
+        }
+
+    private fun findMatchingSubRange(numbers: List<Long>, target: Long): List<Long> {
+        for (i in numbers.indices) {
+            for (j in i + 1 until numbers.size) {
+                val window = numbers.subList(i, j)
+                if (window.sum() == target) return window
+            }
+        }
+        return emptyList()
+    }
 }

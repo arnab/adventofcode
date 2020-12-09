@@ -43,4 +43,16 @@ internal class XmasEncryptionTest {
         Assertions.assertEquals(105950735, XmasEncryption.findFirstInvalid(data))
     }
 
+    @Test
+    fun `part 2 test`() {
+        val data = XmasEncryption.parse(exampleInput)
+        Assertions.assertEquals(62, XmasEncryption.findEncryptionWeakness(data, 127))
+    }
+
+    @Test
+    fun `part 2 real`() {
+        val data = XmasEncryption.parse(problemInput)
+        Assertions.assertEquals(13826915, XmasEncryption.findEncryptionWeakness(data, 105950735))
+    }
+
 }
