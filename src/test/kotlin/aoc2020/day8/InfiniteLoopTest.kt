@@ -44,6 +44,6 @@ class InfiniteLoopTest {
     fun `part 2 real`() {
         val program = InfiniteLoop.Program.parse(problemInput)
         val state = program.detectAndRepair()
-        Assertions.assertEquals(1, state!!.currentAccumulatedValue)
+        Assertions.assertEquals(1036, state!!.currentAccumulatedValue)
     }
 }
