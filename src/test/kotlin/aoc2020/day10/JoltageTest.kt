@@ -82,4 +82,22 @@ internal class JoltageTest {
         Assertions.assertEquals(2812, answerPart1)
     }
 
+    @Test
+    fun `part 2 test`() {
+        val adapters = Joltage.parse(exampleInput).toSet()
+        Assertions.assertEquals(8, Joltage.countPaths(adapters))
+    }
+
+    @Test
+    fun `part 2 test2`() {
+        val adapters = Joltage.parse(example2Input).toSet()
+        Assertions.assertEquals(19208, Joltage.countPaths(adapters))
+    }
+
+    @Test
+    fun `part 2 real`() {
+        val adapters = Joltage.parse(problemInput).toSet()
+        Assertions.assertEquals(386869246296064, Joltage.countPaths(adapters))
+    }
+
 }
