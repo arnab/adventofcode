@@ -37,6 +37,27 @@ object GameOfLife {
                 }
             }.flatten().filterNotNull()
 
+        fun neighborsUntilNextSeat(cells: List<List<Cell>>): List<Cell> =
+            listOf(
+                Pair(-1, -1), Pair(-1, 0), Pair(-1, 1),
+                Pair(0, -1), Pair(0, 1),
+                Pair(1, -1), Pair(1, 0), Pair(1, 1)
+            ).mapNotNull { (stepY, stepX) ->
+                findNearestSeatInDirection(this.y, this.x, stepY, stepX, cells)
+            }
+
+        private fun findNearestSeatInDirection(y: Int, x: Int, stepY: Int, stepX: Int, cells: List<List<Cell>>): Cell? {
+            val nextY = y + stepY
+            val nextX = x + stepX
+            val nextCell = cells.getOrNull(nextY)?.getOrNull(nextX)
+
+            return if (nextCell == null || nextCell.state != State.FLOOR)
+                nextCell
+            else
+                findNearestSeatInDirection(nextY, nextX, stepY, stepX, cells)
+        }
+
+
         fun nextState(neighbors: List<Cell>): State {
             if (this.state == State.FLOOR)
                 return state
@@ -44,7 +65,8 @@ object GameOfLife {
             if (this.state == State.EMPTY && neighbors.none { it.state == State.OCCUPIED })
                 return State.OCCUPIED
 
-            if (this.state == State.OCCUPIED && neighbors.filter { it.state == State.OCCUPIED }.count() >= 4)
+            // Part 2 rules apply...
+            if (this.state == State.OCCUPIED && neighbors.filter { it.state == State.OCCUPIED }.count() >= 5)
                 return State.EMPTY
 
             return state
@@ -73,7 +95,7 @@ object GameOfLife {
     private fun simulateNextGeneration(cells: List<List<Cell>>): Pair<Boolean, List<List<Cell>>> {
         val nextCells = cells.map { col ->
             col.map { cell ->
-                val neighbors = cell.neighbors(cells)
+                val neighbors = cell.neighborsUntilNextSeat(cells)
                 cell.copy( state = cell.nextState(neighbors) )
             }
         }

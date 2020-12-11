@@ -21,17 +21,27 @@ internal class GameOfLifeTest {
 
     private val problemInput = File("src/test/resources/aoc2020/day11/input.txt").readText()
 
+//    @Test
+//    fun `part 1 test`() {
+//        verifyPart1(GameOfLife.parse(exampleInput), 37)
+//    }
+//
+//    @Test
+//    fun `part 1 real`() {
+//        verifyPart1(GameOfLife.parse(problemInput), 37)
+//    }
+//
     @Test
-    fun `part 1 test`() {
-        verifyPart1(GameOfLife.parse(exampleInput), 37)
+    fun `part 2 test`() {
+        verify(GameOfLife.parse(exampleInput), 26)
     }
 
     @Test
-    fun `part 1 real`() {
-        verifyPart1(GameOfLife.parse(problemInput), 37)
+    fun `part 2 real`() {
+        verify(GameOfLife.parse(problemInput), 1865)
     }
 
-    private fun verifyPart1(cells: List<List<GameOfLife.Cell>>, expectedCount: Int) {
+    private fun verify(cells: List<List<GameOfLife.Cell>>, expectedCount: Int) {
         val (generations, stableStateCells) = GameOfLife.simulateUntilStable(cells)
         val count = GameOfLife.countSeats(stableStateCells, GameOfLife.State.OCCUPIED)
         println("Stabilized after $generations generations.")
