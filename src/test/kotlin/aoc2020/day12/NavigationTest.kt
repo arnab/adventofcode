@@ -19,16 +19,32 @@ internal class NavigationTest {
 
     @Test
     fun `part 1 test`() {
-        verify(Navigation.parse(exampleInput), 25)
+        verifyPart1(Navigation.parse(exampleInput), 25)
     }
 
     @Test
     fun `part 1 real`() {
-        verify(Navigation.parse(problemInput), 759)
+        verifyPart1(Navigation.parse(problemInput), 759)
     }
 
-    private fun verify(turns: List<Navigation.Turn>, expectedAnswer: Int) {
+    @Test
+    fun `part 2 test`() {
+        verifyPart2(Navigation.parse(exampleInput), 286)
+    }
+
+    @Test
+    fun `part 2 real`() {
+        verifyPart2(Navigation.parse(problemInput), 45763)
+    }
+
+    private fun verifyPart1(turns: List<Navigation.Turn>, expectedAnswer: Int) {
         val shipAtFinalPosition = Navigation.navigate(turns)
+        val manhattanDistance = abs(shipAtFinalPosition.currentX) + abs(shipAtFinalPosition.currentY)
+        Assertions.assertEquals(manhattanDistance, expectedAnswer)
+    }
+
+    private fun verifyPart2(turns: List<Navigation.Turn>, expectedAnswer: Int) {
+        val shipAtFinalPosition = Navigation.navigateWithWaypoint(turns)
         val manhattanDistance = abs(shipAtFinalPosition.currentX) + abs(shipAtFinalPosition.currentY)
         Assertions.assertEquals(manhattanDistance, expectedAnswer)
     }
