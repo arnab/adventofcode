@@ -1,5 +1,6 @@
 package aoc2020.day5
 
+import aoc.extensions.splitAtIndex
 import java.lang.IllegalArgumentException
 
 object Airplane {
@@ -40,7 +41,4 @@ object Airplane {
             else -> throw IllegalArgumentException("Unknown indicator: $next")
         }
     }
-
-    private fun String.splitAtIndex(index : Int) = take(index) to substring(index)
-
 }
