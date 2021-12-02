@@ -30,4 +30,18 @@ internal class DepthOnARollTest {
     private fun verifyPart1(data: List<DepthOnARoll.Command>, expectedAnswer: Int) {
         Assertions.assertEquals(DepthOnARoll.calculate(data), expectedAnswer)
     }
+
+    @Test
+    fun `part 2 test`() {
+        verifyPart2(DepthOnARoll.parse(exampleInput), 900)
+    }
+
+    @Test
+    fun `part 2 real`() {
+        verifyPart2(DepthOnARoll.parse(problemInput), 1856459736)
+    }
+
+    private fun verifyPart2(data: List<DepthOnARoll.Command>, expectedAnswer: Int) {
+        Assertions.assertEquals(DepthOnARoll.calculateWithAim(data), expectedAnswer)
+    }
 }
