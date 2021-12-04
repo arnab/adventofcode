@@ -43,4 +43,18 @@ internal class BingoTest {
     private fun verifyPart1(game: Bingo.Game, expectedAnswer: Int) {
         Assertions.assertEquals(game.solvePart1(), expectedAnswer)
     }
+
+    @Test
+    fun `part 2 test`() {
+        verifyPart2(Bingo.parse(exampleInput), 1924)
+    }
+
+    @Test
+    fun `part 2 real`() {
+        verifyPart2(Bingo.parse(problemInput), 26936)
+    }
+
+    private fun verifyPart2(game: Bingo.Game, expectedAnswer: Int) {
+        Assertions.assertEquals(game.solvePart2(), expectedAnswer)
+    }
 }

@@ -37,8 +37,7 @@ object Bingo {
                 val column = slots.map { it[columnIndex] }
                 column.all { it.marked }
             }
-
-            return false
+            return anyColumnFullyMarked
         }
     }
 
@@ -66,6 +65,24 @@ object Bingo {
         private fun calculateAnswer(board: Board, step: Int): Int {
             val sumOfAllUnmarked = board.slots.flatten().filter { !it.marked }.sumOf { it.num }
             return sumOfAllUnmarked * step
+        }
+
+        fun solvePart2(): Int {
+            var nextStepBoards = boards
+            val remainingSteps = steps.dropWhile { step ->
+                nextStepBoards = play(step, nextStepBoards).filterNot { it.isWinner() }
+                nextStepBoards.size != 1
+            }
+
+            var lastBoard = nextStepBoards.first()
+            remainingSteps.forEach { step ->
+                lastBoard = play(step, listOf(lastBoard)).first()
+                if (lastBoard.isWinner()) {
+                    return calculateAnswer(lastBoard, step)
+                }
+            }
+
+            throw RuntimeException("Woah! No winner!")
         }
     }
 
