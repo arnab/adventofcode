@@ -32,16 +32,15 @@ internal class BingoTest {
 
     @Test
     fun `part 1 test`() {
-        verifyPart1(Bingo.parse(exampleInput), 1)
+        verifyPart1(Bingo.parse(exampleInput), 4512)
     }
 
     @Test
     fun `part 1 real`() {
-        verifyPart1(Bingo.parse(problemInput), 1)
+        verifyPart1(Bingo.parse(problemInput), 39902)
     }
 
     private fun verifyPart1(game: Bingo.Game, expectedAnswer: Int) {
-        Assertions.assertEquals(1, expectedAnswer)
-        TODO()
+        Assertions.assertEquals(game.solvePart1(), expectedAnswer)
     }
 }
