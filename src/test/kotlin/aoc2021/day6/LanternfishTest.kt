@@ -24,6 +24,24 @@ internal class LanternfishTest {
         Assertions.assertEquals(after80Days, 377263)
     }
 
+    @Test
+    fun `part 2 test`() {
+        val initialSchool = Lanternfish.parse(exampleInput)
+        Assertions.assertEquals(
+            Lanternfish.calculateSchoolSizeRecursiveWithMemory(initialSchool, days = 256),
+            26984457539
+        )
+    }
+
+    @Test
+    fun `part 2 real`() {
+        val initialSchool = Lanternfish.parse(problemInput)
+        Assertions.assertEquals(
+            Lanternfish.calculateSchoolSizeRecursiveWithMemory(initialSchool, days = 256),
+            1695929023803
+        )
+    }
+
     private fun verifyPart1(initialPopulation: List<Lanternfish.Fish>, expectedAnswer: Int) {
         val after18Days = Lanternfish.calculateSchoolSize(initialPopulation, days = 18)
         val after80Days = Lanternfish.calculateSchoolSize(initialPopulation, days = 80)

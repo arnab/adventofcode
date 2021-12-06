@@ -23,4 +23,21 @@ object Lanternfish {
             }
         return schoolAtTheEnd.size
     }
+
+    fun calculateSchoolSizeRecursiveWithMemory(school: List<Fish>, days: Int): Long =
+        school.sumOf { fish -> spawnAndMemoize(fish, days) }
+
+    private val memory = HashMap<Pair<Fish, Int>, Long>()
+
+    private fun spawnAndMemoize(fish: Fish, days: Int): Long {
+        return when {
+            fish.counter == -1 -> spawnAndMemoize(Fish(6), days) + spawnAndMemoize(Fish(), days)
+            days == 0 -> 1L
+            else -> memory[Pair(fish, days)] ?: spawnAndMemoize(
+                Fish(fish.counter - 1), days - 1
+            ).also {
+                memory[Pair(fish, days)] = it
+            }
+        }
+    }
 }
