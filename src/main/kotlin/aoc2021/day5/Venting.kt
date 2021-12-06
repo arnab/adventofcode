@@ -1,5 +1,7 @@
 package aoc2021.day5
 
+import kotlin.math.absoluteValue
+
 object Venting {
     data class Point(val x: Int, val y: Int) {
         companion object {
@@ -38,6 +40,35 @@ object Venting {
         }
 
         return points.values.count { it >= 2 }
+    }
+
+    fun countDangerousPointsV2(lines: List<Pair<Point, Point>>): Int {
+        val points = lines.fold(mutableMapOf<Point, Int>()) { counts, (start, end) ->
+            findPointsAlong(start, end).forEach { point ->
+                counts[point] = counts.getOrDefault(point, 0) + 1
+            }
+            counts
+        }
+
+        return points.values.count { it >= 2 }
+    }
+
+    private fun findPointsAlong(start: Point, end: Point): List<Point> {
+        val xIterator = when {
+            start.x < end.x -> (start.x..end.x).iterator()
+            start.x > end.x -> (start.x downTo end.x).iterator()
+            else -> generateSequence { start.x }.iterator()
+        }
+        val yIterator = when {
+            start.y < end.y -> (start.y..end.y).iterator()
+            start.y > end.y -> (start.y downTo end.y).iterator()
+            else -> generateSequence { start.y }.iterator()
+        }
+        val pointsAlongDiagonal = mutableListOf<Point>()
+        while (xIterator.hasNext() && yIterator.hasNext()) {
+            pointsAlongDiagonal.add(Point(xIterator.next(), yIterator.next()))
+        }
+        return pointsAlongDiagonal
     }
 }
 

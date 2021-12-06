@@ -34,4 +34,18 @@ internal class VentingTest {
     private fun verifyPart1(lines: List<Pair<Venting.Point, Venting.Point>>, expectedAnswer: Int) {
         Assertions.assertEquals(Venting.countDangerousPoints(lines), expectedAnswer)
     }
+
+    @Test
+    fun `part 2 test`() {
+        verifyPart2(Venting.parse(exampleInput), 12)
+    }
+
+    @Test
+    fun `part 2 real`() {
+        verifyPart2(Venting.parse(problemInput), 19929)
+    }
+
+    private fun verifyPart2(lines: List<Pair<Venting.Point, Venting.Point>>, expectedAnswer: Int) {
+        Assertions.assertEquals(Venting.countDangerousPointsV2(lines), expectedAnswer)
+    }
 }
