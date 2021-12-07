@@ -19,10 +19,24 @@ internal class CrabSubmarineTest {
 
     @Test
     fun `part 1 real`() {
-        verifyPart1(CrabSubmarine.parse(problemInput), 1)
+        verifyPart1(CrabSubmarine.parse(problemInput), 347449)
     }
 
     private fun verifyPart1(crabs: List<Int>, expectedAnswer: Int) {
         Assertions.assertEquals(CrabSubmarine.findFuelCostForMedian(crabs), expectedAnswer)
+    }
+
+    @Test
+    fun `part 2 test`() {
+        verifyPart2(CrabSubmarine.parse(exampleInput), 168)
+    }
+
+    @Test
+    fun `part 2 real`() {
+        verifyPart2(CrabSubmarine.parse(problemInput), 98039527)
+    }
+
+    private fun verifyPart2(crabs: List<Int>, expectedAnswer: Int) {
+        Assertions.assertEquals(CrabSubmarine.findFuelCostWithInflation(crabs), expectedAnswer)
     }
 }
