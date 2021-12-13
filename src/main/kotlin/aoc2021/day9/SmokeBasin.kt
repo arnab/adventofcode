@@ -1,5 +1,7 @@
 package aoc2021.day9
 
+import java.util.LinkedList
+
 object SmokeBasin {
 
     data class Loc(val x: Int, val y: Int)
@@ -25,5 +27,33 @@ object SmokeBasin {
         Loc(loc.x, loc.y - 1),
         Loc(loc.x, loc.y + 1),
     )
+
+    fun calculateLargeBasinsScore(heightByLoc: Map<Loc, Int>) = findLowPoints(heightByLoc).keys.asSequence()
+        .map { findBasinAround(it, heightByLoc) }
+        .map { it.size }
+        .sortedByDescending { it }
+        .take(3)
+        .fold(1) { score, basinSize -> score * basinSize }
+
+    private fun findBasinAround(start: Loc, heightByLoc: Map<Loc, Int>): Set<Loc> {
+        val basin = HashSet<Loc>()
+
+        val candidates = LinkedList(findAdjacents(start)
+            .filter { adjacent -> heightByLoc.containsKey(adjacent) }
+            .filter { heightByLoc[it]!! < 9 })
+
+        while (candidates.isNotEmpty()) {
+            val nextLoc = candidates.pop()
+            if (heightByLoc[nextLoc]!! < 9) {
+                basin.add(nextLoc)
+                val secondDegreeAdjacents = findAdjacents(nextLoc)
+                    .filter { adjacent -> heightByLoc.containsKey(adjacent) }
+                    .filter { heightByLoc[it]!! < 9 }
+                    .filter { !basin.contains(it) }
+                candidates.addAll(secondDegreeAdjacents)
+            }
+        }
+        return basin
+    }
 
 }

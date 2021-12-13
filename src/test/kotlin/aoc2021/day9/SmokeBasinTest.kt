@@ -23,10 +23,24 @@ internal class SmokeBasinTest {
 
     @Test
     fun `part 1 real`() {
-        verifyPart1(SmokeBasin.parse(problemInput), 1)
+        verifyPart1(SmokeBasin.parse(problemInput), 448)
     }
 
     private fun verifyPart1(locations: Map<SmokeBasin.Loc, Int>, expectedAnswer: Int) {
         Assertions.assertEquals(SmokeBasin.calculateRiskScore(locations), expectedAnswer)
+    }
+
+    @Test
+    fun `part 2 test`() {
+        verifyPart2(SmokeBasin.parse(exampleInput), 1134)
+    }
+
+    @Test
+    fun `part 2 real`() {
+        verifyPart2(SmokeBasin.parse(problemInput), 1417248)
+    }
+
+    private fun verifyPart2(locations: Map<SmokeBasin.Loc, Int>, expectedAnswer: Int) {
+        Assertions.assertEquals(SmokeBasin.calculateLargeBasinsScore(locations), expectedAnswer)
     }
 }
