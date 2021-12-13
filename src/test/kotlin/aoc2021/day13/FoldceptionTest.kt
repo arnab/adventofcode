@@ -42,10 +42,29 @@ internal class FoldceptionTest {
         verifyPart1(Foldception.parse(problemInput), 1)
     }
 
-    private fun verifyPart1(data: Pair<List<Foldception.Loc>, List<Foldception.Fold>>, expectedAnswer: Int, debug: Boolean = false) {
+    private fun verifyPart1(data: Pair<Set<Foldception.Loc>, List<Foldception.Fold>>, expectedAnswer: Int, debug: Boolean = false) {
         val (locations, folds) = data
-        val newLocations = Foldception.fold(locations, folds, debug)
-        val markedSpots = Foldception.countMarkedSpots(newLocations)
-        Assertions.assertEquals(1, expectedAnswer)
+        val finalLocations = Foldception.fold(locations, listOf( folds.first()), debug)
+        Foldception.printLocations(debug = true, finalLocations)
+        val markedSpots = Foldception.countMarkedSpots(finalLocations)
+        Assertions.assertEquals(markedSpots, expectedAnswer)
+    }
+
+    @Test
+    fun `part 2 test`() {
+        verifyPart2(Foldception.parse(exampleInput), 1, debug = true)
+    }
+
+    @Test
+    fun `part 2 real`() {
+        verifyPart2(Foldception.parse(problemInput), 1)
+    }
+
+    private fun verifyPart2(data: Pair<Set<Foldception.Loc>, List<Foldception.Fold>>, expectedAnswer: Int, debug: Boolean = false) {
+        val (locations, folds) = data
+        val finalLocations = Foldception.fold(locations, folds, debug)
+        Foldception.printLocations(debug = true, finalLocations)
+        val markedSpots = Foldception.countMarkedSpots(finalLocations)
+        Assertions.assertEquals(markedSpots, expectedAnswer)
     }
 }

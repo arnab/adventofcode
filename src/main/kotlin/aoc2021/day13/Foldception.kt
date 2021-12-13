@@ -7,13 +7,13 @@ object Foldception {
     enum class FoldDirection() { X, Y, }
     data class Fold(val dir: FoldDirection, val amount: Int)
 
-    fun parse(data: String): Pair<List<Loc>, List<Fold>> {
+    fun parse(data: String): Pair<Set<Loc>, List<Fold>> {
         val (locationLines, foldLines) = data.split("\n\n").take(2)
 
         val locations = locationLines.split("\n").map { line ->
             val (x, y) = line.split(",").take(2).map { it.toInt() }
             Loc(x, y)
-        }
+        }.toSet()
 
         val folds = foldLines.split("\n")
             .map { it.replace("fold along ", "") }
@@ -29,19 +29,22 @@ object Foldception {
         return Pair(locations, folds)
     }
 
-    fun fold(initLocations: List<Loc>, folds: List<Fold>, debug: Boolean = false): List<Loc> {
-        folds.fold(initLocations) { locations, fold ->
+    fun fold(initLocations: Set<Loc>, folds: List<Fold>, debug: Boolean = false): Set<Loc> {
+        return folds.fold(initLocations) { locations, fold ->
             printLocations(debug, locations, fold)
-//            when (fold.dir) {
-//                FoldDirection.Y -> locations.keys
-//            }
-            emptyList()
-        }
 
-        return emptyList()
+            when (fold.dir) {
+                FoldDirection.Y -> locations.filter { it.y > fold.amount }
+                    .map { it.copy(y = 2 * fold.amount - it.y) }
+                    .toSet() + locations.filter { it.y < fold.amount }
+                FoldDirection.X -> locations.filter { it.x > fold.amount }
+                    .map { it.copy(x = 2 * fold.amount - it.x) }
+                    .toSet() + locations.filter { it.x < fold.amount }
+            }
+        }
     }
 
-    private fun printLocations(debug: Boolean, locations: List<Loc>, fold: Fold) {
+    fun printLocations(debug: Boolean, locations: Set<Loc>, fold: Fold? = null) {
         if (!debug) return
 
         val maxX = locations.map { it.x }.maxOf { it }
@@ -55,9 +58,9 @@ object Foldception {
             }
         }
         println()
-        println("Applying: $fold")
+        if (fold != null) println("Applying: $fold")
         println("=========================================================================================")
     }
 
-    fun countMarkedSpots(locations: List<Loc>) = locations.size
+    fun countMarkedSpots(locations: Set<Loc>) = locations.count()
 }
