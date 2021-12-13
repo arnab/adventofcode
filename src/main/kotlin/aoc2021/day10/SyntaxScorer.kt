@@ -34,4 +34,39 @@ object SyntaxScorer {
             }
         }.sumBy { it }
     }
+
+    fun autoCompleteAndScore(data: List<String>): Long {
+        val autocompleteScores = mutableListOf<Long>()
+
+        data.map next@{ line ->
+            val incomplete = ArrayDeque<Char>()
+
+            line.forEach { token ->
+                if (token in openingTokens)
+                    incomplete.addLast(token)
+                else if (closingTokens.indexOf(token) == openingTokens.indexOf(incomplete.last()))
+                    incomplete.removeLast()
+                else {
+                    return@next
+                }
+            }
+
+            autocompleteScores.add(
+                incomplete.reversed()
+                    .map { token -> closingTokens[openingTokens.indexOf(token)] }
+                    .map { autoCompleteScore(it) }
+                    .fold(0) { total, points -> total * 5 + points }
+            )
+        }
+
+        return autocompleteScores.sorted()[autocompleteScores.size/2]
+    }
+
+    private fun autoCompleteScore(token: Char) = when (token) {
+        ')' -> 1
+        ']' -> 2
+        '}' -> 3
+        '>' -> 4
+        else -> throw IllegalArgumentException("Woah! Unknown token: $token")
+    }
 }

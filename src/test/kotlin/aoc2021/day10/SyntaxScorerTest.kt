@@ -35,4 +35,18 @@ internal class SyntaxScorerTest {
         Assertions.assertEquals(SyntaxScorer.calculateErrorScore(data), expectedAnswer)
     }
 
+    @Test
+    fun `part 2 test`() {
+        verifyPart2(SyntaxScorer.parse(exampleInput), 288957L)
+    }
+
+    @Test
+    fun `part 2 real`() {
+        verifyPart2(SyntaxScorer.parse(problemInput), 4001832844L)
+    }
+
+    private fun verifyPart2(data: List<String>, expectedAnswer: Long) {
+        Assertions.assertEquals(SyntaxScorer.autoCompleteAndScore(data), expectedAnswer)
+    }
+
 }
