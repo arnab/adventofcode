@@ -34,4 +34,18 @@ internal class SevenSegmentsTest {
     private fun verifyPart1(data: List<SevenSegments.Observation>, expectedAnswer: Int) {
         Assertions.assertEquals(SevenSegments.countDigitsWithUniqSegments(data), expectedAnswer)
     }
+
+    @Test
+    fun `part 2 test`() {
+        verifyPart2(SevenSegments.parse(exampleInput), 61229)
+    }
+
+    @Test
+    fun `part 2 real`() {
+        verifyPart2(SevenSegments.parse(problemInput), 1019355)
+    }
+
+    private fun verifyPart2(data: List<SevenSegments.Observation>, expectedAnswer: Int) {
+        Assertions.assertEquals(SevenSegments.decodeAllAndSum(data), expectedAnswer)
+    }
 }
